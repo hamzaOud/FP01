@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aed1cad8a27f44bcb01a04457c964a5, type: 3}
+  m_Name: Pichu
+  m_EditorClassIdentifier: 
+  image: {fileID: 21300000, guid: 13d6828b56df347939a27b3bdda8ea98, type: 3}
+  price: 2
+  sellPrice: 1
+  name: Pichu
+  model: {fileID: 0}
+  evolution: {fileID: 11400000, guid: 7f0498192286b4f47a3f033178b454a7, type: 2}
+  type: 07000000
+  pokeClass: 0400000008000000
