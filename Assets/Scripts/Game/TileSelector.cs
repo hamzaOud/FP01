@@ -10,12 +10,11 @@ public class TileSelector : MonoBehaviour//, IPointerEnterHandler, IPointerExitH
     private void Start()
     {
         gameController = GameObject.Find("Scripts").GetComponent<GameController>();
-        print("start called");
     }
 
     private void OnMouseEnter()
     {
-        if (GameController.Instance.currentStage == GameStage.Preparation)
+        if (GamePlayController.Instance.currentGameStage == GameStage.Preparation)
         {
             GetComponent<MeshRenderer>().material.color = Color.red;
             gameController.selectedTile = this.gameObject;
@@ -24,7 +23,7 @@ public class TileSelector : MonoBehaviour//, IPointerEnterHandler, IPointerExitH
 
     private void OnMouseExit()
     {
-        if (GameController.Instance.currentStage != GameStage.Preparation)
+        if (GamePlayController.Instance.currentGameStage != GameStage.Preparation)
             return;
         GetComponent<MeshRenderer>().material.color = Color.white;
         gameController.selectedTile = null;

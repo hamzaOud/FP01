@@ -4,7 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PokemonHover : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
+public class PokemonHover : MonoBehaviourPunCallbacks
 {
     private void OnMouseEnter()
     {
@@ -18,24 +18,6 @@ public class PokemonHover : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallb
     private void OnMouseExit()
     {
         UIController.Instance.statsCanvas.SetActive(false);
-    }
-
-    public void OnPhotonInstantiate(PhotonMessageInfo info) //move this to a more relevant class
-    {
-        object[] instantiationData = info.photonView.InstantiationData;
-        //print("tileID :" + instantiationData[0]);
-
-        for(int i = 0; i < Data.Instance.spawnObjects.Length; i++)
-        {
-            if(Data.Instance.spawnObjects[i].GetComponent<Tile>().tileID == (int)instantiationData[0])
-            {
-                this.gameObject.GetComponent<MovePokemon>().tile = Data.Instance.spawnObjects[i];
-                Data.Instance.spawnObjects[i].gameObject.GetComponent<Tile>().pokemonObject = this.gameObject;
-
-                return;
-            }
-        }
-
     }
     
 }

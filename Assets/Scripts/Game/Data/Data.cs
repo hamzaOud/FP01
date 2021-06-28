@@ -7,15 +7,17 @@ public class Data : MonoBehaviour
     public static Data Instance;
 
     public GameObject[] spawnObjects;
-    public Pokemon[] pokemons;
-    public Trainer trainer;
-    //public GameObject[] trainers;
+    public Pokemon[] pokemons; //For shop
+    public Trainer trainer;//me
 
 
     private void Awake()
     {
         Instance = this;
-        trainer = new Trainer();
     }
 
+    private void Start()
+    {
+        trainer = GameController.Instance.trainers[GameController.Instance.playerID];
+    }
 }

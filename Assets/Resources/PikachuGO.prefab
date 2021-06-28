@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -1118213132429747294}
   - component: {fileID: -1740880096082673626}
   - component: {fileID: -6768280736906826681}
+  - component: {fileID: -4022018005259897407}
   m_Layer: 8
   m_Name: PikachuGO
   m_TagString: Untagged
@@ -112,6 +113,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pokemon: {fileID: 11400000, guid: 7f0498192286b4f47a3f033178b454a7, type: 2}
+--- !u!114 &-4022018005259897407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7157340368237103161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd31a7429092d48f6beac073288fc274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemon: {fileID: 0}
+  stats: {fileID: 0}
+  tilePosition: {fileID: 0}
+  isDead: 0
+  isAttacking: 0
+  isParalyzed: 0
+  isStunned: 0
 --- !u!1001 &6716795621380612070
 PrefabInstance:
   m_ObjectHideFlags: 0

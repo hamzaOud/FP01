@@ -61,20 +61,20 @@ public class MovePokemon : MonoBehaviour
          transform.position = yOffset;
      }
 
-     private void OnMouseUp()
+     private void OnMouseUp() //!!!Clean up this code 
      {
         //If a tile is selected
         if (gameController.selectedTile != null)
         {
 
             //If selected a tile on the board
-            if (gameController.boardTiles.Contains(gameController.selectedTile))
+            if (gameController.myBoard.myTiles.Contains(gameController.selectedTile))
             {
                 //3 options to move a pokemon on the board tiles:
                 //1. If trainer's level is > to the number of pokemons on board
                 //2. if moving a pokemon from one board tile to another
                 //3. If moving a pokemon from the bench to the board (the selected tile's pokemonObject is not null)
-                if (data.trainer.level > data.trainer.pokemonsOnBoard.Count || (gameController.boardTiles.Contains(tile) && gameController.boardTiles.Contains(gameController.selectedTile)) || (data.trainer.level == data.trainer.pokemonsOnBoard.Count && gameController.selectedTile.GetComponent<Tile>().pokemonObject != null))
+                if (data.trainer.level > data.trainer.pokemonsOnBoard.Count || (gameController.myBoard.myTiles.Contains(tile) && gameController.myBoard.myTiles.Contains(gameController.selectedTile)) || (data.trainer.level == data.trainer.pokemonsOnBoard.Count && gameController.selectedTile.GetComponent<Tile>().pokemonObject != null))
                 {
                     pokemonMoveLogic();
                 }
@@ -95,10 +95,12 @@ public class MovePokemon : MonoBehaviour
         }
 
         enablePokemonColliders();
-        GameController.Instance.updatePokemonsOnBoard();
+        GameController.Instance.updatePokemonsOnBoard(); //Fix this function before un-commenting
+        UIController.Instance.UpdateUI();
+
     }
 
-    void disablePokemonColliders()
+    void disablePokemonColliders() //So the pokemon's collider does not interfere with the tile's collider
     {
         foreach (KeyValuePair<Pokemon, List<GameObject>> item in data.trainer.pokedex)
         {

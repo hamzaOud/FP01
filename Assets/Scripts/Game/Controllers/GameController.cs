@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public enum GameStage {Preparation, Combat, Loss};
+
 
 public class GameController : MonoBehaviour
 {
@@ -13,14 +13,15 @@ public class GameController : MonoBehaviour
     public GameObject selectedPokemon;
     public GameObject selectedTile;
     public GameObject spawnPoint0;
-    public GameObject[] boardTiles;
 
     public GameObject[] tiles;
     public BoardController[] boardControllers;
     public BoardController myBoard;
 
-    public GameStage currentStage;
+    public Trainer[] trainers;
 
+
+    public int playerID;
 
     public static GameController Instance;
 
@@ -28,12 +29,17 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
 
-
-        currentStage = GameStage.Preparation;
+        ConfigurePlayerID();
         //Initialization and Configuration
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         ConfigureBoardController();
+        ConfigureTrainers();
 
+
+        if(playerID != 0)
+        {
+            MoveCamera(boardControllers[0].enemyCameraPosition);
+        }
     }
 
 
@@ -52,7 +58,7 @@ public class GameController : MonoBehaviour
                         Destroy(gameObject);
                     }
                 data.trainer.pokedex.Remove(pokemon);
-                StartCoroutine(Wait(pokemon.evolution));
+                StartCoroutine(Evolve(pokemon.evolution));
                 }
     }
     else //If its not ready for evolution
@@ -81,15 +87,17 @@ public class GameController : MonoBehaviour
                 thisPokemonsList.Add(newPokemon);
                 data.trainer.pokedex.Add(pokemon, thisPokemonsList);
             }
-        }              
+        }
+
+        UIController.Instance.UpdateUI();              
     }   
 
 
-    public void updatePokemonsOnBoard()
+    public void updatePokemonsOnBoard() //Called in MovePokemon, bugging out because cant file Tile component
     {
         data.trainer.pokemonsOnBoard.Clear();
 
-        foreach (GameObject tile in boardTiles)
+        foreach (GameObject tile in myBoard.myTiles)
         {
             if (tile.GetComponent<Tile>().pokemonObject != null)
             {
@@ -110,7 +118,7 @@ public class GameController : MonoBehaviour
         return spawnPoint0;
     }
 
-    IEnumerator Wait(Pokemon pokemon)
+    IEnumerator Evolve(Pokemon pokemon)
     {
         yield return new WaitForSeconds(0.1f);
         Debug.Log("wait is over");
@@ -126,7 +134,30 @@ public class GameController : MonoBehaviour
             {
                 boardControllers[i].isMine = true;
                 myBoard = boardControllers[i];
+                return;
             }
+        }
+    }
+
+    private void ConfigurePlayerID()
+    {
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            if (PlayerPrefs.GetString("Name") == PhotonNetwork.PlayerList[i].NickName)
+            {
+                playerID = i;
+            }
+        }
+    }
+
+    public void ConfigureTrainers()
+    {
+        trainers = new Trainer[PhotonNetwork.PlayerList.Length];
+
+        for (int i =0; i< PhotonNetwork.PlayerList.Length; i++)
+        {
+            Trainer trainer = new Trainer();
+            trainers[i] = trainer;
         }
     }
 
@@ -159,5 +190,21 @@ public class GameController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void MoveCamera(GameObject cameraPosition)
+    {
+        Camera.main.gameObject.transform.position = cameraPosition.transform.position;
+        Camera.main.gameObject.transform.rotation = cameraPosition.transform.rotation;
+    }
+
+    public bool CheckIfMine(int targetID)
+    {
+        if (targetID == playerID)
+        {
+            return true;
+        }
+        else
+            return false;
     }
 }

@@ -9,11 +9,10 @@ public class DebugButton : MonoBehaviour
 
     public void OnClickDebugButton()
     {
-        Data data = GameObject.Find("Scripts").GetComponent<Data>();
-        List<GameObject> value = new List<GameObject>();
-        data.trainer.pokedex.TryGetValue(pikachu, out value);
-        print("number of pikachus: " + value.Count);
 
-        print("no. of pokemons on board: " + data.trainer.pokemonsOnBoard.Count);
+        //GamePlayController.Instance.CountBonuses();
+        //UIController.Instance.UpdateBonusesUI();
+
+        print(GamePlayController.Instance.enemyPokemonsAlive.Count);
     }
 }
