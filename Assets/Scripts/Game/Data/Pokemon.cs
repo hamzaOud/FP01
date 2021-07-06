@@ -17,4 +17,5 @@ public class Pokemon : ScriptableObject
     public Pokemon evolution;
     public PokeType[] type;
     public PokeClass[] pokeClass;
+    public int pokemonID;
 }

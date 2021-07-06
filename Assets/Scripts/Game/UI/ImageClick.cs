@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 public class ImageClick : MonoBehaviour , IPointerClickHandler , IPointerEnterHandler, IPointerExitHandler
 {
@@ -19,6 +20,12 @@ public class ImageClick : MonoBehaviour , IPointerClickHandler , IPointerEnterHa
             shopController.updateUI();
             this.gameObject.SetActive(false);
         }    
+    }
+
+    [PunRPC]
+    public void ShopButtonClickRPC()
+    {
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)

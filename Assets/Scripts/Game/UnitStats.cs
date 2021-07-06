@@ -9,6 +9,12 @@ public class UnitStats : MonoBehaviour
     public int currentMana = 0;
     public int maxMana = 100;
 
+    public int Attack;
+    public int Defense;
+    public int SpecialAttack;
+    public int SpecialDefense;
+    public int AttackSpeed;
+
 
     public void Reset()
     {

@@ -11,15 +11,15 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 60; //Constant that keeps track of length of preparation round
-    public const int combatRoundTime = 60; //Constant that keeps track of length of combat round
+    public const int preparationRoundTime = 100; //Constant that keeps track of length of preparation round
+    public const int combatRoundTime = 10; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
 
     public int baseGoldIncome = 5; //Base amount that you gain each round no matter what
 
     [HideInInspector]
-    public List<PokemonController> enemyPokemonsAlive;//List of enemy pokemons that are alive on the board
+    public List<PokemonController> enemyPokemons;//List of enemy pokemons that are alive on the board
     [HideInInspector]
     public List<PokemonController> myPokemonsAlive; //List of my units pokemons are alive on the board
 
@@ -203,10 +203,10 @@ public class GamePlayController : MonoBehaviour
     }
     private void ResetBoard()
     {
-        enemyPokemonsAlive.Clear();
-        foreach(PokemonController enemy in enemyPokemonsAlive)
+        enemyPokemons.Clear();
+        foreach(PokemonController enemy in enemyPokemons)
         {
-            Destroy(enemy.gameObject);
+            enemy.Reset();
         }
     }
 
@@ -214,8 +214,21 @@ public class GamePlayController : MonoBehaviour
     {
 
         GameObject enemy = Instantiate(prefab, tile.transform.position, Quaternion.Euler(0,180,0));
-        enemyPokemonsAlive.Add(enemy.GetComponent<PokemonController>());
+        enemyPokemons.Add(enemy.GetComponent<PokemonController>());
         tile.gameObject.GetComponent<Tile>().pokemonObject = enemy;
         enemy.GetComponent<MovePokemon>().tile = tile;
+    }
+
+    bool AreAllEnemiesDead()
+    {
+        bool value = true;
+        for(int i = 0; i < enemyPokemons.Count; i++)
+        {
+            if (enemyPokemons[i].isDead == false)
+            {
+                value = false;
+            }
+        }
+        return value;
     }
 }

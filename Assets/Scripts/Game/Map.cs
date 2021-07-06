@@ -12,9 +12,6 @@ public class Map : MonoBehaviour
 
     public Vector3[,] mapPositions;
 
-    public GameObject capsule;
-    public GameObject capsule2;
-
 
     // Start is called before the first frame update
     void Start()
@@ -50,11 +47,5 @@ public class Map : MonoBehaviour
                 mapPositions[i,j] = position;
             }
         }
-
-        print(mapPositions.Length);
-        print(mapPositions[0, 1]);
-        capsule.transform.position = mapPositions[0, 1];
-        capsule2.transform.position = mapPositions[5, 3];
-        print(1 % 2);
     }
 }

@@ -20,3 +20,4 @@ MonoBehaviour:
   evolution: {fileID: 11400000, guid: b1569bb9bfb5c4328876f2c9061ada5f, type: 2}
   type: 07000000
   pokeClass: 04000000
+  pokemonID: 2

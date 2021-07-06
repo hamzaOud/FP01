@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3364674392711038850}
   m_Layer: 8
   m_Name: MeowthGO
-  m_TagString: Untagged
+  m_TagString: Units
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   pokemon: {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
   layeringtest: 0
   data: {fileID: 0}
+  photonView: {fileID: 4018360241609028462}
 --- !u!65 &4711019089701612198
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,13 +126,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd31a7429092d48f6beac073288fc274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pokemon: {fileID: 0}
+  pokemon: {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
   stats: {fileID: 0}
   tilePosition: {fileID: 0}
   isDead: 0
   isAttacking: 0
   isParalyzed: 0
   isStunned: 0
+  unitID: 0
 --- !u!1001 &4711019087938789243
 PrefabInstance:
   m_ObjectHideFlags: 0

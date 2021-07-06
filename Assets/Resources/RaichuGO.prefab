@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -426427402740536089}
   m_Layer: 8
   m_Name: RaichuGO
-  m_TagString: Untagged
+  m_TagString: Units
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   pokemon: {fileID: 11400000, guid: b1569bb9bfb5c4328876f2c9061ada5f, type: 2}
   layeringtest: 0
   data: {fileID: 0}
+  photonView: {fileID: 8998063873515993627}
 --- !u!65 &4092106707521391350
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,13 +126,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd31a7429092d48f6beac073288fc274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pokemon: {fileID: 0}
+  pokemon: {fileID: 11400000, guid: b1569bb9bfb5c4328876f2c9061ada5f, type: 2}
   stats: {fileID: 0}
   tilePosition: {fileID: 0}
   isDead: 0
   isAttacking: 0
   isParalyzed: 0
   isStunned: 0
+  unitID: 0
 --- !u!1001 &140981520316468450
 PrefabInstance:
   m_ObjectHideFlags: 0

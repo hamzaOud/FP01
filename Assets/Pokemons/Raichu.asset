@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aed1cad8a27f44bcb01a04457c964a5, type: 3}
   m_Name: Raichu
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 637c464fc7ddf4646a82efedf3f9ec5b, type: 3}
   price: 0
   sellPrice: 9
   name: Raichu
@@ -20,3 +20,4 @@ MonoBehaviour:
   evolution: {fileID: 0}
   type: 07000000
   pokeClass: 04000000
+  pokemonID: 3

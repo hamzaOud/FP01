@@ -9,7 +9,8 @@ public class BoardController : MonoBehaviour
     public GameObject[] enemyTiles;
     public GameObject[] tiles;
 
-    public GameObject enemyCameraPosition;
+    public Transform myCameraPosition;
+    public Transform enemyCameraPosition;
 
     public bool isMine;
 }

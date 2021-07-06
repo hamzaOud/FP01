@@ -9,11 +9,14 @@ public class UIController : MonoBehaviour
     public static UIController Instance;
 
     public PlayerUIElement[] playerUIElements;
+    public PlayersUnitsElement[] playersUnitsElements;
+
 
     public GameObject statsCanvas;
     public Text pokemonNameText;
     public Text pokemonTypeText;
     public Text pokemonClassText;
+    public GameObject altPanel;
 
     public GameObject bonusPrefab; //Prefab used to show class and types on board
 
@@ -23,11 +26,33 @@ public class UIController : MonoBehaviour
     {
         Instance = this;
 
-
         for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         { //Show players names and levels on players canvas
             playerUIElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName
             + " Level " + GameController.Instance.trainers[i].level.ToString();
+        }
+        altPanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            GameController.Instance.updatePokemonsOnBoard();
+            altPanel.SetActive(true);
+            for(int i =0; i < PhotonNetwork.PlayerList.Length; i++)
+             {
+                playersUnitsElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName;
+                for(int j = 0; j < GameController.Instance.trainers[i].pokemonsOnBoard.Count; j++)
+                {
+                    playersUnitsElements[i].pokemonImages[j].sprite = GameController.Instance.trainers[i].
+                    pokemonsOnBoard[j].GetComponent<MovePokemon>().pokemon.image;
+                }
+
+            }
+        } else if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            altPanel.SetActive(false);
         }
     }
 
@@ -76,7 +101,7 @@ public class UIController : MonoBehaviour
         timerText.text = GamePlayController.Instance.timerDisplay.ToString();
     }
 
-    public void UpdateBonusesUI()
+    public void UpdateBonusesUI() //Updates the class/type UI elements on the left-hand side
     {
         //Find the panel to place UI elements in
         GameObject panel = GameObject.Find("BonusPanel");

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class DebugButton : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class DebugButton : MonoBehaviour
     public void OnClickDebugButton()
     {
 
-        //GamePlayController.Instance.CountBonuses();
-        //UIController.Instance.UpdateBonusesUI();
-
-        print(GamePlayController.Instance.enemyPokemonsAlive.Count);
+        for(int i= 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            print("trainer " + i + " has " + GameController.Instance.trainers[i].spawnPoints.Length + " spawnpoints");
+        }
     }
 }
