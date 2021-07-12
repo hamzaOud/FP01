@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour
-{   
+{
     public GameObject[] myBench;
     public GameObject[] myTiles;
     public GameObject[] enemyTiles;
@@ -13,4 +13,11 @@ public class BoardController : MonoBehaviour
     public Transform enemyCameraPosition;
 
     public bool isMine;
+
+    private void Awake()
+    {
+        myTiles = new GameObject[28];
+        tiles = new GameObject[56];
+        enemyTiles = new GameObject[28];
+    }
 }

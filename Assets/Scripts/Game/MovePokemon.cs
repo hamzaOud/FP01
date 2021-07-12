@@ -158,7 +158,6 @@ public class MovePokemon : MonoBehaviour
         //tile = gameController.selectedTile;
     }
 
-
     [PunRPC]
     public void MoveUnit(int unitID, int targetTileID, int startTileID, int otherunitID)
     {
@@ -190,7 +189,11 @@ public class MovePokemon : MonoBehaviour
                 targetTile = GameController.Instance.tiles[i];
             }
         }
-
+        if(targetTileID == startTileID)
+        {
+            unit.transform.position = unit.GetComponent<MovePokemon>().tile.transform.position;
+            return;
+        }
         if (targetTile.gameObject.GetComponent<Tile>().pokemonObject == null)
         {//If target tile has no pokemon on it
             unit.transform.position = targetTile.transform.position;
