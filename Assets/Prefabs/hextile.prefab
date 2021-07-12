@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8432830092417418738}
   - component: {fileID: 4803288974049987159}
   - component: {fileID: 7299282310520389277}
-  - component: {fileID: -5323553628518235232}
   - component: {fileID: -6137568032122210182}
   m_Layer: 0
   m_Name: hextile
@@ -83,18 +82,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-5323553628518235232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9100858844870057800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c661216c70684eacb1edf5cbbac89b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &-6137568032122210182
 MeshCollider:
   m_ObjectHideFlags: 0

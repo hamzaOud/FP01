@@ -25,9 +25,9 @@ public class HexTileMapGenerator : MonoBehaviour
     // Update is called once per frame
     void CreateHexTileMap()
     {
-        for(int x = 0; x < mapWidth; x++)
+        for(int z = 0; z < mapHeight; z++)
         {
-            for(int z = 0; z < mapHeight; z++)
+            for(int x = 0; x < mapWidth; x++)
             {
                 GameObject TempGO = Instantiate(hexTilePrefab);
 
@@ -40,9 +40,10 @@ public class HexTileMapGenerator : MonoBehaviour
                 } 
 
                 BoardController board1 = GameObject.Find("Board1").GetComponent<BoardController>();
-                board1.tiles[findNextIndex(board1.tiles)] = TempGO;
-
                 TempGO.name = findNextIndex(board1.tiles).ToString();
+                board1.tiles[findNextIndex(board1.tiles)] = TempGO;
+                TempGO.tag = "Tile";
+                
                 TempGO.transform.parent = board1.gameObject.transform;
 
                 if (z < 4)
