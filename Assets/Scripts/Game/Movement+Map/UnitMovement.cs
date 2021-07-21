@@ -11,6 +11,10 @@ public class UnitMovement : MonoBehaviour
     public GameObject currentTile;
     public List<Node> adjacencyList = new List<Node>();
     public List<Node> path = new List<Node>();
+    public Node[,] myNodes;
+    public List<UnitMovement> units = new List<UnitMovement>();
+
+    public LayerMask unitLayer;
 
     public int attackRange = 1;
 
@@ -18,40 +22,78 @@ public class UnitMovement : MonoBehaviour
 
     public Vector3 heading;
     public float moveSpeed = 4.0f;
+    public bool moving = false;
 
     // Update is called once per frame
     void Update()
     {
         GetCurrentTile();
+        print(findNodeFromTile(currentTile).walkable);
+
         if(target == null)
         {
             target = FindClosestEnemyUnit();
-            print(target.gameObject.name);
         }
-        FindPath(hexMap.findNodeFromTile(currentTile), hexMap.findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile));
-        if(path.Count > 1)
+        
+        if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) > 1)
         {
+            FindPath(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile));
             Move();
         }
-        //Move();
+        else if(hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) == 1)
+        {
+            if (Vector3.Distance(transform.position, currentTile.transform.position) > 0.6f)
+            {
+                Vector3 velocity = new Vector3();
+
+                heading = (path.First().worldPos + new Vector3(0, 0.5f, 0)) - transform.position;
+                heading.Normalize();
+
+                velocity = heading * moveSpeed;
+                transform.forward = heading;
+                if (velocity != Vector3.zero)
+                {
+                    transform.position += velocity * Time.deltaTime;
+                }
+            }
+            else
+            {
+                transform.position = currentTile.transform.position + new Vector3(0,0.5f,0);
+            }
+        }
+        
     }
 
     private void Start()
-    {
+    {   
         hexMap = HexTileMapGenerator.Instance;
+        myNodes = new Node[hexMap.mapWidth, hexMap.mapHeight];
+        for(int y = 0; y < hexMap.mapHeight; y++)
+        {
+            for (int x = 0; x < hexMap.mapWidth; x++)
+            {
+                Node node = new Node(true, hexMap.nodes[x, y].gridX, hexMap.nodes[x,y].gridY, hexMap.nodes[x, y].worldPos);
+                myNodes[x, y] = node;
+            }
+        }
+        units = findAllUnits();
     }
-   
+
 
     void Move()
     {
+        moving = true;
         Vector3 velocity = new Vector3();
-        
-        heading = (path.First().worldPos + new Vector3(0,0.5f,0)) - transform.position;
+
+        heading = (path.First().worldPos + new Vector3(0, 0.5f, 0)) - transform.position;
         heading.Normalize();
 
         velocity = heading * moveSpeed;
         transform.forward = heading;
-        transform.position += velocity * Time.deltaTime;
+        if (velocity != Vector3.zero)
+        {
+            transform.position += velocity * Time.deltaTime;
+        }
     }
 
     //Finds the tile we are currently on by raycasting a ray downwards, and assigns the currentTile attribute
@@ -64,10 +106,9 @@ public class UnitMovement : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "Tile")
             {
-                currentTile = hit.collider.gameObject;
+                currentTile =  hit.collider.gameObject;
             }
         }
-
     }
 
     //Returns the closest enemy of this unit, will need to switch to use hex distance instead of euclidian distance
@@ -91,8 +132,7 @@ public class UnitMovement : MonoBehaviour
     //A* pathfinding algorithm
     void FindPath(Node startNode, Node targetNode)
     {
-        GetCurrentTile();
-
+        checkWhichTilesOccupied();
         //Create an open and closed list
         //The open list contains all the nodes that we have already calculated the f cost
         //The closed list contains all the nodes that have already been evaluated
@@ -118,11 +158,22 @@ public class UnitMovement : MonoBehaviour
 
                 if(currentNode == targetNode) //path has been found
                 {
-                    RetracePath(startNode, targetNode);
+                    RetracePath(startNode, targetNode.parent);
+                        /*foreach(UnitMovement unit in units)
+                        {
+                            foreach(Node n in unit.myNodes)
+                                    {
+                                        if(n.gridX == targetNode.parent.gridX && n.gridY == targetNode.parent.gridY)
+                                        {
+                                            n.walkable = false;
+                                        }
+                                    }
+                        }*/
+                    
                     return;
                 }
 
-                foreach(Node neighbour in HexTileMapGenerator.Instance.GetNeighbours(currentNode))
+                foreach(Node neighbour in GetNeighbours(currentNode))
                 {//Loops through every neighbour of the current node
                     if(!neighbour.walkable || closedSet.Contains(neighbour))
                     {//If this node has already been evaluated or is unwalkable, skip this neighbour
@@ -148,7 +199,21 @@ public class UnitMovement : MonoBehaviour
                 }
             }
         }
-    
+
+    public Node findNodeFromTile(GameObject tile)
+    {
+        Node n = null;
+
+        foreach (Node node in myNodes)
+        {
+            if (node.worldPos == tile.transform.position)
+            {
+                n = node;
+            }
+        }
+
+        return n;
+    }
 
     //Start from the end node, and find the parent of that node, add it to the list and do the same until we are at the start node
     //Then reverse the list because we started on the end node. 
@@ -168,9 +233,76 @@ public class UnitMovement : MonoBehaviour
         this.path = p;
     }
 
-    private void OnDrawGizmos()
+    public List<Node> GetNeighbours(Node node)
     {
-        foreach (Node n in hexMap.nodes)
+        List<Node> adjacencyListr = new List<Node>();
+        if (node.gridY % 2 == 0)
+        {
+            CheckTile(node.gridX - 1, node.gridY - 1, adjacencyListr);
+            CheckTile(node.gridX - 1, node.gridY, adjacencyListr);
+            CheckTile(node.gridX + 1, node.gridY, adjacencyListr);
+            CheckTile(node.gridX, node.gridY - 1, adjacencyListr);
+            CheckTile(node.gridX, node.gridY + 1, adjacencyListr);
+            CheckTile(node.gridX - 1, node.gridY + 1, adjacencyListr);
+        }
+        else
+        {
+            CheckTile(node.gridX, node.gridY - 1, adjacencyListr);
+            CheckTile(node.gridX - 1, node.gridY, adjacencyListr);
+            CheckTile(node.gridX + 1, node.gridY, adjacencyListr);
+            CheckTile(node.gridX + 1, node.gridY - 1, adjacencyListr);
+            CheckTile(node.gridX + 1, node.gridY + 1, adjacencyListr);
+            CheckTile(node.gridX, node.gridY + 1, adjacencyListr);
+        }
+
+        return adjacencyListr;
+    }
+
+    //Checks to see if a node with these coordinate exist, if so, add that node to the list passed in the parameters.
+    void CheckTile(int x, int y, List<Node> adjacencyR)
+    {
+        foreach (Node node in myNodes)
+        {
+            if (node.gridX == x && node.gridY == y)
+            {
+                adjacencyR.Add(node);
+                return;
+            }
+        }
+    }
+
+    void checkWhichTilesOccupied()
+    {
+        foreach(Node node in myNodes)
+        {
+            if(!Physics.CheckSphere(node.worldPos, 0.5f, unitLayer))
+            {
+               node.walkable = true;
+            }
+            else
+            {
+                node.walkable = false;
+            }
+        }
+    }
+
+    List<UnitMovement> findAllUnits()
+    {
+        List<UnitMovement> unitsList = new List<UnitMovement>();
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        foreach(GameObject u in units)
+        {
+            if (u.GetComponent<UnitMovement>())
+            {
+                unitsList.Add(u.GetComponent<UnitMovement>());
+            }
+        }
+        return unitsList;
+    }
+
+    /*private void OnDrawGizmos()
+    {
+        foreach (Node n in myNodes)
         {
             if (path != null)
             {
@@ -183,5 +315,5 @@ public class UnitMovement : MonoBehaviour
             }
             
         }
-    }
+    }*/
 }

@@ -116,6 +116,7 @@ public class GameController : MonoBehaviour
             trainers[i].pokemonsOnBoard.Clear();
             foreach(GameObject tile in GameController.Instance.boardControllers[i].myTiles)
             {
+                print(tile.GetComponent<Tile>());
                 if(tile.GetComponent<Tile>().pokemonObject != null)
                 {
                     GameController.Instance.trainers[i].pokemonsOnBoard.Add(tile.GetComponent<Tile>().pokemonObject);
