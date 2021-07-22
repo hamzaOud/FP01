@@ -28,13 +28,34 @@ public class UnitMovement : MonoBehaviour
     void Update()
     {
         GetCurrentTile();
-        print(findNodeFromTile(currentTile).walkable);
+        
+        //findNodeFromTile(currentTile).walkable = false;
+        //myNodes[0, 1].walkable = false;
+        //print(findNodeFromTile(currentTile).walkable);
+        //checkWhichTilesOccupied();
+        foreach(Node n in myNodes)
+        {
+            if (!n.walkable)
+            {
+                print("x: " + n.gridX + ", y:" + n.gridY + " is not walkable");
+            }
+        }
+        
+        print("tile 12: " + myNodes[5,1].walkable);
 
         if(target == null)
         {
             target = FindClosestEnemyUnit();
         }
-        
+        foreach (UnitMovement u in units)
+        {
+            if (u.gameObject != target)
+            {
+                findNodeFromTile(u.currentTile).walkable = false;
+            }
+
+        }
+
         if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) > 1)
         {
             FindPath(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile));
@@ -44,21 +65,12 @@ public class UnitMovement : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, currentTile.transform.position) > 0.6f)
             {
-                Vector3 velocity = new Vector3();
-
-                heading = (path.First().worldPos + new Vector3(0, 0.5f, 0)) - transform.position;
-                heading.Normalize();
-
-                velocity = heading * moveSpeed;
-                transform.forward = heading;
-                if (velocity != Vector3.zero)
-                {
-                    transform.position += velocity * Time.deltaTime;
-                }
+                Move();
             }
             else
             {
                 transform.position = currentTile.transform.position + new Vector3(0,0.5f,0);
+                moving = false;
             }
         }
         
@@ -132,7 +144,7 @@ public class UnitMovement : MonoBehaviour
     //A* pathfinding algorithm
     void FindPath(Node startNode, Node targetNode)
     {
-        checkWhichTilesOccupied();
+        //checkWhichTilesOccupied();
         //Create an open and closed list
         //The open list contains all the nodes that we have already calculated the f cost
         //The closed list contains all the nodes that have already been evaluated
