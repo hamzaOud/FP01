@@ -110,7 +110,7 @@ public class PhotonRoomCustomMatch : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         print(PhotonNetwork.PlayerList.Length);
         isGameloaded = true;
-        PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.LoadLevel(3);
 
     }
 

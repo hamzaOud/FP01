@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 1c906450b6ef94691a0a94ea75495b51
+  - enabled: 1
+    path: Assets/Scenes/MovementDev.unity
+    guid: 44f7af2cb5a5b0643bda92ecff0621d6
   m_configObjects: {}
