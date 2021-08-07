@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Photon.Pun;
 
 public class UnitMovement : MonoBehaviour
 {
@@ -27,33 +28,32 @@ public class UnitMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+
+        }
         GetCurrentTile();
         
         //findNodeFromTile(currentTile).walkable = false;
         //myNodes[0, 1].walkable = false;
         //print(findNodeFromTile(currentTile).walkable);
         //checkWhichTilesOccupied();
-        foreach(Node n in myNodes)
-        {
-            if (!n.walkable)
-            {
-                print("x: " + n.gridX + ", y:" + n.gridY + " is not walkable");
-            }
-        }
-        
-        print("tile 12: " + myNodes[5,1].walkable);
 
         if(target == null)
         {
             target = FindClosestEnemyUnit();
         }
-        foreach (UnitMovement u in units)
+        GameObject[] munits = GameObject.FindGameObjectsWithTag("Units");
+        foreach(Node n in myNodes)
+        {
+           n.walkable = true;
+        }
+        foreach (GameObject u in munits)
         {
             if (u.gameObject != target)
             {
-                findNodeFromTile(u.currentTile).walkable = false;
+                findNodeFromTile(u.GetComponent<CurrentTileTest>().currentTile).walkable = false;
             }
-
         }
 
         if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) > 1)
