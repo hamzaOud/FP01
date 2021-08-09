@@ -28,57 +28,52 @@ public class UnitMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        //if (PhotonNetwork.IsMasterClient)
         {
+            GetCurrentTile();
 
-        }
-        GetCurrentTile();
-        
-        //findNodeFromTile(currentTile).walkable = false;
-        //myNodes[0, 1].walkable = false;
-        //print(findNodeFromTile(currentTile).walkable);
-        //checkWhichTilesOccupied();
-
-        if(target == null)
-        {
-            target = FindClosestEnemyUnit();
-        }
-        GameObject[] munits = GameObject.FindGameObjectsWithTag("Units");
-        foreach(Node n in myNodes)
-        {
-           n.walkable = true;
-        }
-        foreach (GameObject u in munits)
-        {
-            if (u.gameObject != target)
+            if (target == null)
             {
-                findNodeFromTile(u.GetComponent<CurrentTileTest>().currentTile).walkable = false;
+                target = FindClosestEnemyUnit();
             }
-        }
-
-        if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) > 1)
-        {
-            FindPath(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile));
-            Move();
-        }
-        else if(hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) == 1)
-        {
-            if (Vector3.Distance(transform.position, currentTile.transform.position) > 0.6f)
+            GameObject[] munits = GameObject.FindGameObjectsWithTag("Units");
+            foreach (Node n in myNodes)
             {
+                n.walkable = true;
+            }
+            foreach (GameObject u in munits)
+            {
+                if (u.gameObject != target)
+                {
+                    findNodeFromTile(u.GetComponent<CurrentTileTest>().currentTile).walkable = false;
+                }
+            }
+
+            if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) > 1)
+            {
+                FindPath(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile));
                 Move();
             }
-            else
+            else if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) == 1)
             {
-                transform.position = currentTile.transform.position + new Vector3(0,0.5f,0);
-                moving = false;
+                if (Vector3.Distance(transform.position, currentTile.transform.position) > 0.6f)
+                {
+                    Move();
+                }
+                else
+                {
+                    transform.position = currentTile.transform.position + new Vector3(0, 0.5f, 0);
+                    moving = false;
+                }
             }
         }
-        
     }
 
     private void Start()
-    {   
+    {    
+        print(this.gameObject.name + " called Start");
         hexMap = HexTileMapGenerator.Instance;
+        //hexMap = GameObject.Find("TileGenerator").GetComponent<HexTileMapGenerator>();
         myNodes = new Node[hexMap.mapWidth, hexMap.mapHeight];
         for(int y = 0; y < hexMap.mapHeight; y++)
         {
@@ -88,6 +83,7 @@ public class UnitMovement : MonoBehaviour
                 myNodes[x, y] = node;
             }
         }
+        
         units = findAllUnits();
     }
 
@@ -311,21 +307,4 @@ public class UnitMovement : MonoBehaviour
         }
         return unitsList;
     }
-
-    /*private void OnDrawGizmos()
-    {
-        foreach (Node n in myNodes)
-        {
-            if (path != null)
-            {
-                if (path.Contains(n))
-                {
-                    Gizmos.color = Color.black;
-                    Gizmos.DrawCube(n.worldPos, Vector3.one * 0.8f);
-                }
-                
-            }
-            
-        }
-    }*/
 }

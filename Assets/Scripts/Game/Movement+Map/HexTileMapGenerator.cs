@@ -24,9 +24,14 @@ public class HexTileMapGenerator : MonoBehaviour
         Instance = this;
         nodes = new Node[mapWidth, mapHeight];
         tiles = new GameObject[mapWidth * mapHeight];
+        print("Hexmap start call");
         CreateHexTileMap();
     }
 
+    private void Awake()
+    {
+        print("Hexmap Awake call");    
+    }
     // Update is called once per frame
     void CreateHexTileMap()
     {
