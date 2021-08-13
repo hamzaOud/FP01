@@ -18,12 +18,14 @@ public class UnitMovement : MonoBehaviour
     public LayerMask unitLayer;
 
     public int attackRange = 1;
+    public bool isMapOwner;
 
     public HexTileMapGenerator hexMap;
 
     public Vector3 heading;
     public float moveSpeed = 4.0f;
     public bool moving = false;
+    public Node targetN;
 
     // Update is called once per frame
     void Update()
@@ -39,13 +41,23 @@ public class UnitMovement : MonoBehaviour
             GameObject[] munits = GameObject.FindGameObjectsWithTag("Units");
             foreach (Node n in myNodes)
             {
-                n.walkable = true;
+               n.walkable = true;
             }
             foreach (GameObject u in munits)
             {
                 if (u.gameObject != target)
                 {
                     findNodeFromTile(u.GetComponent<CurrentTileTest>().currentTile).walkable = false;
+                }
+            }
+            foreach(Node n in hexMap.occupiedNodes)
+            {
+                foreach(Node node in myNodes)
+                {
+                    if(node.gridX == n.gridX && node.gridY == n.gridY)
+                    {
+                        n.walkable = false;
+                    }
                 }
             }
 
@@ -167,17 +179,13 @@ public class UnitMovement : MonoBehaviour
                 if(currentNode == targetNode) //path has been found
                 {
                     RetracePath(startNode, targetNode.parent);
-                        /*foreach(UnitMovement unit in units)
-                        {
-                            foreach(Node n in unit.myNodes)
-                                    {
-                                        if(n.gridX == targetNode.parent.gridX && n.gridY == targetNode.parent.gridY)
-                                        {
-                                            n.walkable = false;
-                                        }
-                                    }
-                        }*/
                     
+                    if(targetN != targetNode.parent)
+                {
+                    hexMap.occupiedNodes.Add(targetNode.parent);
+                    hexMap.occupiedNodes.Remove(targetN);
+                    targetN = targetNode.parent;
+                }
                     return;
                 }
 

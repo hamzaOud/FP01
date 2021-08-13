@@ -18,6 +18,8 @@ public class HexTileMapGenerator : MonoBehaviour
     public int offset;
     public static HexTileMapGenerator Instance;
 
+    public List<Node> occupiedNodes;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +28,7 @@ public class HexTileMapGenerator : MonoBehaviour
         tiles = new GameObject[mapWidth * mapHeight];
         print("Hexmap start call");
         CreateHexTileMap();
+        occupiedNodes = new List<Node>();
     }
 
     private void Awake()
