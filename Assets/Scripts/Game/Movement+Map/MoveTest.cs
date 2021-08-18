@@ -18,6 +18,9 @@ public class MoveTest : MonoBehaviour
     [SerializeField]
     private float attackRange = 1.5f;
 
+    public float attackSpeed = 2.0f;
+    public float attackTimer = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +30,6 @@ public class MoveTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PositionHealthbar();
-
         if(target == null)
         {
            target =  FindClosestTarget();
@@ -65,10 +66,30 @@ public class MoveTest : MonoBehaviour
 
     void AttackTarget()
     {
+        attackTimer += Time.deltaTime;
 
+        
+        if(attackTimer >= attackSpeed)
+        {
+            if (GetComponent<UnitStats>().currentMana >= GetComponent<UnitStats>().maxMana)
+            {
+                SpecialAttack();
+            }
+            else
+            {
+                target.GetComponent<UnitStats>().currentHP -= 10;
+                GetComponent<UnitStats>().currentMana += 10;
+
+                attackTimer = 0.0f;
+            }
+        }
     }
-    void PositionHealthbar()
+
+    void SpecialAttack()
     {
-        healthbar.transform.position = Camera.main.WorldToScreenPoint(sliderPosition.transform.position);
+        GetComponent<UnitStats>().currentMana = 0;
+        target.GetComponent<UnitStats>().currentHP -= 25;
+        attackTimer = 0.0f;
     }
+
 }
