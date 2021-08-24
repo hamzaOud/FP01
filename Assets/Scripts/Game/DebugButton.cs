@@ -10,10 +10,7 @@ public class DebugButton : MonoBehaviour
 
     public void OnClickDebugButton()
     {
-
-        for(int i= 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            print("trainer " + i + " has " + GameController.Instance.trainers[i].spawnPoints.Length + " spawnpoints");
-        }
+        GameController.Instance.updatePokemonsOnBoard();
+        print(GameController.Instance.boardControllers[0].myTiles.Length);
     }
 }

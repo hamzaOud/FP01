@@ -110,7 +110,8 @@ public class PhotonRoomCustomMatch : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         print(PhotonNetwork.PlayerList.Length);
         isGameloaded = true;
-        PhotonNetwork.LoadLevel(3);
+        PhotonNetwork.LoadLevel(2);
+        //game scene = 2, movement dev scene = 3
 
     }
 

@@ -4,9 +4,22 @@ using UnityEngine;
 
 public class UnitStats : MonoBehaviour
 {
-    public int currentHP = 100;
+
+
+    private int currentHP = 100;
+    public int CurrentHP
+    {
+        get { return currentHP; }
+        set { currentHP = value; }
+    }
     public int maxHP = 100;
-    public int currentMana = 0;
+    
+    private int currentMana = 0;
+    public int CurrentMana
+    {
+        get { return currentMana; }
+        set { currentMana = value; }
+    }
     public int maxMana = 100;
 
     public int Attack;

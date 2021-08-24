@@ -12,10 +12,11 @@ public class HexTileMapGenerator : MonoBehaviour
     public float tileXOffset = 1.8f; //distance in width (x) of 2 hex tiles
     public float tileZOffset = 1.565f; // distance in length(z) of 2 hex tiles
 
-    public Node[,] nodes; //array of all existingn nodes (here 56 nodes)
+    public Node[,,] nodes; //array of all existingn nodes (here 56 nodes)
     public GameObject[] tiles; //array of all the hextile gameobjects
 
-    public int offset;
+    public float offset = 5f;
+
     public static HexTileMapGenerator Instance;
 
     public List<Node> occupiedNodes;
@@ -24,51 +25,52 @@ public class HexTileMapGenerator : MonoBehaviour
     void Start()
     {
         Instance = this;
-        nodes = new Node[mapWidth, mapHeight];
-        tiles = new GameObject[mapWidth * mapHeight];
-        print("Hexmap start call");
+        nodes = new Node[GameController.Instance.boardControllers.Length, mapWidth, mapHeight]; //CHANGE 8 TO GAMECONTROLLER.INSTANCE.BOARDONCTROLLERS.LENGTH
+        tiles = new GameObject[mapWidth * mapHeight * GameController.Instance.boardControllers.Length];
         CreateHexTileMap();
+        GameController.Instance.tiles = GameObject.FindGameObjectsWithTag("Tile");
         occupiedNodes = new List<Node>();
-    }
-
-    private void Awake()
-    {
-        print("Hexmap Awake call");    
     }
     // Update is called once per frame
     void CreateHexTileMap()
     {
-        for(int y = 0; y < mapHeight; y++)
+
+        for (int j = 0; j < GameController.Instance.boardControllers.Length; j++)
         {
-            for(int x = 0; x < mapWidth; x++)
+            for (int y = 0; y < mapHeight; y++)
             {
-                GameObject TempGO = Instantiate(hexTilePrefab);
+                for (int x = 0; x < mapWidth; x++)
+                {
+                    GameObject TempGO = Instantiate(hexTilePrefab);
 
-                if(y % 2 == 0) 
-                {//If we are on an even row
-                    TempGO.transform.position = new Vector3(x * tileXOffset - offset,0,y*tileZOffset - offset);
-                } else
-                {//If we are on an odd row, shift the tile right by half a tile's width
-                    TempGO.transform.position = new Vector3(x * tileXOffset + tileXOffset / 2 - offset, 0, y * tileZOffset - offset);
-                }
-                Node node = new Node(true, x, y, TempGO.transform.position);
-                nodes[x, y] = node; //Store this tile's node in the nodes array
+                    if (y % 2 == 0)
+                    {//If we are on an even row
+                        TempGO.transform.position = new Vector3(x * tileXOffset + j * 100 - offset, 0, y * tileZOffset - offset);
+                    }
+                    else
+                    {//If we are on an odd row, shift the tile right by half a tile's width
+                        TempGO.transform.position = new Vector3(x * tileXOffset + (tileXOffset / 2) + j * 100 - offset, 0, y * tileZOffset - offset);
+                    }
+                    Node node = new Node(true, x, y, TempGO.transform.position);
+                    nodes[j,x, y] = node; //Store this tile's node in the nodes array
 
-                BoardController board1 = GameObject.Find("Board1").GetComponent<BoardController>();
-                TempGO.name = findNextIndex(tiles).ToString();
-                tiles[findNextIndex(tiles)] = TempGO;
-                board1.tiles[findNextIndex(board1.tiles)] = TempGO;
-                TempGO.GetComponent<TileController>().coordinates = new Vector2(x, y);
-                
-                TempGO.transform.parent = board1.gameObject.transform;
+                    BoardController board = GameController.Instance.boardControllers[j];
+                    TempGO.name = GameController.Instance.boardControllers[j].gameObject.name + findNextIndex(tiles).ToString();
+                    tiles[findNextIndex(tiles)] = TempGO;
+                    board.tiles[findNextIndex(board.tiles)] = TempGO;
+                    TempGO.GetComponent<TileController>().coordinates = new Vector2(x, y);
+                    TempGO.GetComponent<Tile>().tileID = FindNextTileID();
 
-                if (y < 4)
-                {//The first 4 rows are my tiles
-                    board1.myTiles[findNextIndex(board1.myTiles)] = TempGO;
-                }
-                else
-                {//The last 4 rows are the enemy's tiles
-                    board1.enemyTiles[findNextIndex(board1.enemyTiles)] = TempGO;
+                    TempGO.transform.parent = board.gameObject.transform;
+
+                    if (y < 4)
+                    {//The first 4 rows are my tiles
+                        board.myTiles[findNextIndex(board.myTiles)] = TempGO;
+                    }
+                    else
+                    {//The last 4 rows are the enemy's tiles
+                        board.enemyTiles[findNextIndex(board.enemyTiles)] = TempGO;
+                    }
                 }
             }
         }
@@ -85,6 +87,12 @@ public class HexTileMapGenerator : MonoBehaviour
         }
 
         return 0;
+    }
+
+    int FindNextTileID()
+    {
+        int tilesCount = GameObject.FindGameObjectsWithTag("Tile").Length;
+        return tilesCount;
     }
 
     //Returns the corresponding node of a tile gameObject.

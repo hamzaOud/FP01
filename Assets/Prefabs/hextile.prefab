@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7299282310520389277}
   - component: {fileID: -6137568032122210182}
   - component: {fileID: 7934121037903637973}
+  - component: {fileID: -7439654718681990937}
+  - component: {fileID: 6993243618721895138}
   m_Layer: 0
   m_Name: hextile
   m_TagString: Tile
@@ -110,3 +112,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coordinates: {x: 0, y: 0}
+--- !u!114 &-7439654718681990937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100858844870057800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c661216c70684eacb1edf5cbbac89b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonselectedMaterial: {fileID: 0}
+--- !u!114 &6993243618721895138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100858844870057800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff10b9c0689ad4d97a47d413795228df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemonObject: {fileID: 0}
+  tileID: 0
+  isMine: 0
+  tileType: 0

@@ -14,7 +14,7 @@ public class Trainer
 
     public Trainer(int playerID)
     {
-        balance = 50;
+        balance = 50; //Change this to 2, so start with 2 gold
         level = 1;
         currentExp = 0;
         pokedex = new Dictionary<Pokemon, List<GameObject>>();

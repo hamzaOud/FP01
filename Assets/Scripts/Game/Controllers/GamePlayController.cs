@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 
 public enum GameStage { Preparation, Combat, Loss };
@@ -11,20 +12,24 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 100; //Constant that keeps track of length of preparation round
-    public const int combatRoundTime = 10; //Constant that keeps track of length of combat round
+    public const int preparationRoundTime = 15; //Constant that keeps track of length of preparation round
+    public const int combatRoundTime = 15; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
 
-    public int baseGoldIncome = 5; //Base amount that you gain each round no matter what
+    public int[] baseIncome = { 2, 3, 4, 5, 5, 5, 5, 5, 5 };//Base amount that you gain depending on level
 
     [HideInInspector]
-    public List<PokemonController> enemyPokemons;//List of enemy pokemons that are alive on the board
+    public List<PokemonController> enemyPokemons = new List<PokemonController>();//List of enemy pokemons that are alive on the board
     [HideInInspector]
-    public List<PokemonController> myPokemonsAlive; //List of my units pokemons are alive on the board
+    public List<PokemonController> myPokemonsAlive = new List<PokemonController>(); //List of my units pokemons are alive on the board
+    [HideInInspector]
+    public List<PokemonController> myUnitsOnBoard = new List<PokemonController>(); //List of my pokemons on the board
 
     public Dictionary<PokeType, int> pokeTypeCounter; //List of unique Pokemon Types with associated count
     public Dictionary<PokeClass, int> pokeClassCounter; //List of unique Pokemon Classes with associated count
+
+    public PhotonView photonView;
 
     // Start is called before the first frame update
     void Start()
@@ -50,9 +55,9 @@ public class GamePlayController : MonoBehaviour
         UIController.Instance.UpdateTimer(); //update timer on UI
 
 
-        if (hasTimerEnded())
+        if (hasTimerEnded() && PhotonNetwork.IsMasterClient)
         {
-            NextRound();
+            photonView.RPC("NextRound", RpcTarget.All);
         }
     }
 
@@ -67,7 +72,7 @@ public class GamePlayController : MonoBehaviour
             else
                 return true;
         }
-        else if (currentGameStage == GameStage.Combat)
+        else
         {
             if (currentRoundTimer < combatRoundTime)
             {
@@ -75,21 +80,21 @@ public class GamePlayController : MonoBehaviour
             }
             else return true;
         }
-        else return false;
-
     }
 
-    private void NextRound()
+    
+    [PunRPC]
+    public void NextRound()
     {
         currentRoundTimer = 0.0f; //Reset timer
         if (currentGameStage == GameStage.Preparation)
         {//Switch game stage
             currentGameStage = GameStage.Combat;
-            roundNumber++; //Only increment round number for combat rounds.
         }
         else if (currentGameStage == GameStage.Combat)
         {
             currentGameStage = GameStage.Preparation;
+            roundNumber++; //Only increment round number after each combat round
         }
         PrepareBoard();
     }
@@ -161,7 +166,7 @@ public class GamePlayController : MonoBehaviour
 
     public int CalculateIncome()
     {
-        int income = baseGoldIncome + Data.Instance.trainer.balance / 10;
+        int income = baseIncome[Data.Instance.trainer.level + 1] + Data.Instance.trainer.balance / 10;
         return income;
     }
 
@@ -176,24 +181,23 @@ public class GamePlayController : MonoBehaviour
                 case 0:
                     for (int i = 0; i < 1; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i]);
+                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i+3]);
                     }
                     break;
                 case 1:
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i]);
+                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i+3]);
                     }
                     break;
                 case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
+                    for (int i = 0; i < 2; i++)
+                    {
+                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
+                    }
                     break;
                 default:
+                    PairEnemies();
                     break;
             }
         } else if(currentGameStage == GameStage.Preparation)
@@ -203,10 +207,19 @@ public class GamePlayController : MonoBehaviour
     }
     private void ResetBoard()
     {
-        enemyPokemons.Clear();
         foreach(PokemonController enemy in enemyPokemons)
         {
+            if(enemy.ownerID != 888)
             enemy.Reset();
+            else
+            {
+                Destroy(enemy.gameObject);
+            }
+        }
+        enemyPokemons.Clear();
+        foreach(PokemonController unit in myUnitsOnBoard)
+        {
+            unit.Reset();
         }
     }
 
@@ -217,6 +230,14 @@ public class GamePlayController : MonoBehaviour
         enemyPokemons.Add(enemy.GetComponent<PokemonController>());
         tile.gameObject.GetComponent<Tile>().pokemonObject = enemy;
         enemy.GetComponent<MovePokemon>().tile = tile;
+        enemy.GetComponent<PokemonController>().ownerID = 888;
+        enemy.GetComponent<PokemonController>().isOnBoard = true;
+
+        //Change this to 
+        foreach(PokemonController pokemonController in myUnitsOnBoard)
+        {
+            pokemonController.enemies.Add(enemy);
+        }
     }
 
     bool AreAllEnemiesDead()
@@ -230,5 +251,29 @@ public class GamePlayController : MonoBehaviour
             }
         }
         return value;
+    }
+
+    public void RepositionUnit(GameObject unit, int enemyID)
+    {
+        //1.find which node its on
+        //2.Find matching node on enemy's board
+        //3.Find matching tile from node
+        //4.position on tile and rotate
+
+        Node startNode = HexTileMapGenerator.Instance.findNodeFromTile(unit.GetComponent<MovePokemon>().tile);
+        Node finalNode = HexTileMapGenerator.Instance.nodes[enemyID, HexTileMapGenerator.Instance.mapWidth - startNode.gridX,
+            HexTileMapGenerator.Instance.mapHeight - startNode.gridY];
+
+        GameObject tileObject = HexTileMapGenerator.Instance.FindTileFromNode(finalNode);
+
+        unit.transform.position = tileObject.transform.position;
+        unit.transform.rotation = Quaternion.Euler(0, 180, 0);
+    
+    }
+
+    public void PairEnemies()
+    {
+
+
     }
 }

@@ -206,12 +206,12 @@ GameObject:
   - component: {fileID: 7955525555616044086}
   - component: {fileID: 7955525555616044041}
   - component: {fileID: 9064831598689819241}
-  - component: {fileID: 2160589277034295678}
   - component: {fileID: 761841086193983986}
   - component: {fileID: 4293998600399702074}
+  - component: {fileID: -1505566260370998570}
   m_Layer: 0
   m_Name: MyUnit
-  m_TagString: Untagged
+  m_TagString: Units
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -295,26 +295,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 2, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2160589277034295678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7955525555616044042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e59d9660fb2f7544db73d085fa7a69dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  enemies: []
-  isMoving: 0
-  healthbar: {fileID: 0}
-  sliderPosition: {fileID: 8866544315766022392}
-  attackRange: 1.5
-  attackSpeed: 2
-  attackTimer: 0
 --- !u!195 &761841086193983986
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -349,15 +329,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1587a074e5c4c8980be09b3aa6799e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 100
   maxHP: 100
-  currentMana: 0
   maxMana: 100
   Attack: 0
   Defense: 0
   SpecialAttack: 0
   SpecialDefense: 0
   AttackSpeed: 0
+--- !u!114 &-1505566260370998570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7955525555616044042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd31a7429092d48f6beac073288fc274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemon: {fileID: 0}
+  stats: {fileID: 0}
+  tilePosition: {fileID: 0}
+  isDead: 0
+  isAttacking: 0
+  isMoving: 0
+  isParalyzed: 0
+  isStunned: 0
+  unitID: 0
+  target: {fileID: 0}
+  enemies: []
+  attackRange: 1.5
+  attackSpeed: 2
+  attackTimer: 0
 --- !u!1 &8866544315766022392
 GameObject:
   m_ObjectHideFlags: 0

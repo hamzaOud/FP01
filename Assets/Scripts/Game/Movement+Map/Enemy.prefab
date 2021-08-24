@@ -142,11 +142,11 @@ GameObject:
   - component: {fileID: 7411460239857822179}
   - component: {fileID: 3776047624366591127}
   - component: {fileID: 6021944302972513669}
-  - component: {fileID: 3899988353257409640}
   - component: {fileID: 3841624504702062033}
+  - component: {fileID: -8641141306299214768}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Units
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -252,26 +252,6 @@ NavMeshAgent:
   m_BaseOffset: 0.75
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3899988353257409640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7411460239857822182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e59d9660fb2f7544db73d085fa7a69dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  enemies: []
-  isMoving: 0
-  healthbar: {fileID: 2623873988725556638}
-  sliderPosition: {fileID: 4269115581207126627}
-  attackRange: 1.5
-  attackSpeed: 2
-  attackTimer: 0
 --- !u!114 &3841624504702062033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,15 +264,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1587a074e5c4c8980be09b3aa6799e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 100
   maxHP: 100
-  currentMana: 0
   maxMana: 100
   Attack: 0
   Defense: 0
   SpecialAttack: 0
   SpecialDefense: 0
   AttackSpeed: 0
+--- !u!114 &-8641141306299214768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411460239857822182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd31a7429092d48f6beac073288fc274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemon: {fileID: 0}
+  stats: {fileID: 3841624504702062033}
+  tilePosition: {fileID: 0}
+  isDead: 0
+  isAttacking: 0
+  isMoving: 0
+  isParalyzed: 0
+  isStunned: 0
+  unitID: 0
+  target: {fileID: 0}
+  enemies: []
+  attackRange: 1.5
+  attackSpeed: 2
+  attackTimer: 0
 --- !u!1 &9182104708571291409
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,14 +474,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6594110394692334337, guid: a6bdf97cee9ab614aaaab2902376d877, type: 3}
   m_PrefabInstance: {fileID: 246666307750155271}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2623873988725556638 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2811806162328916377, guid: a6bdf97cee9ab614aaaab2902376d877, type: 3}
-  m_PrefabInstance: {fileID: 246666307750155271}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

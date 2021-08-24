@@ -34,7 +34,6 @@ public class GameController : MonoBehaviour
 
         //Initialization and Configuration
         ConfigurePlayerID();
-        tiles = GameObject.FindGameObjectsWithTag("Tile");
         ConfigureBoardController();
         ConfigureTrainers();
 
@@ -62,6 +61,7 @@ public class GameController : MonoBehaviour
             {
                 foreach (GameObject gameObject in pokemonObjects)
                 {
+                    gameObject.GetComponent<MovePokemon>().tile.GetComponent<Tile>().pokemonObject = null;
                     Destroy(gameObject);
                 }
                 trainers[trainerID].pokedex.Remove(pokemon);
@@ -77,7 +77,7 @@ public class GameController : MonoBehaviour
             spawnPoint.GetComponent<Tile>().pokemonObject = newPokemon;
             newPokemon.GetComponent<MovePokemon>().tile = spawnPoint;
             newPokemon.GetComponent<PokemonController>().unitID = GameObject.FindGameObjectsWithTag("Units").Length;
-
+            newPokemon.GetComponent<PokemonController>().ownerID = playerID;
 
             if (trainers[trainerID].pokedex.TryGetValue(pokemon, out value))
             {//If we already have one of these pokemons, add new one to list
@@ -116,9 +116,9 @@ public class GameController : MonoBehaviour
             trainers[i].pokemonsOnBoard.Clear();
             foreach(GameObject tile in GameController.Instance.boardControllers[i].myTiles)
             {
-                print(tile.GetComponent<Tile>());
                 if(tile.GetComponent<Tile>().pokemonObject != null)
                 {
+                    print(tile.GetComponent<Tile>().tileID + " occupied");
                     GameController.Instance.trainers[i].pokemonsOnBoard.Add(tile.GetComponent<Tile>().pokemonObject);
                 }
             }
@@ -253,7 +253,6 @@ public class GameController : MonoBehaviour
         {
             Trainer trainer = new Trainer(i);
             //trainer.spawnPoints = new GameObject[boardControllers[i].myBench.Length + boardControllers[i].myTiles.Length];
-            print(trainer.spawnPoints.Length);
             int caca = 0;
             for (int j = 0; j < boardControllers[i].myBench.Length; j++)
             {

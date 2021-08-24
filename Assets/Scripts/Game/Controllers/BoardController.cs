@@ -14,10 +14,13 @@ public class BoardController : MonoBehaviour
 
     public bool isMine;
 
+    public Node[,] nodes;
+
     private void Awake()
     {
         myTiles = new GameObject[28];
         tiles = new GameObject[56];
         enemyTiles = new GameObject[28];
+        nodes = new Node[7, 8];
     }
 }

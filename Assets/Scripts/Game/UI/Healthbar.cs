@@ -20,9 +20,9 @@ public class Healthbar : MonoBehaviour
     {
         Vector3 positionVector = Camera.main.WorldToScreenPoint(healthbarPositionObject.transform.position);
         this.transform.position = positionVector;
-        float sliderValue = (float)stats.currentHP / (float)stats.maxHP;
+        float sliderValue = (float)stats.CurrentHP / (float)stats.maxHP;
         
         healthbarSlider.value = sliderValue;
-        manaSlider.value = (float)stats.currentMana / (float)stats.maxMana;
+        manaSlider.value = (float)stats.CurrentMana / (float)stats.maxMana;
     }
 }

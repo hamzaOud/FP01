@@ -83,15 +83,13 @@ public class UnitMovement : MonoBehaviour
 
     private void Start()
     {    
-        print(this.gameObject.name + " called Start");
         hexMap = HexTileMapGenerator.Instance;
-        //hexMap = GameObject.Find("TileGenerator").GetComponent<HexTileMapGenerator>();
         myNodes = new Node[hexMap.mapWidth, hexMap.mapHeight];
         for(int y = 0; y < hexMap.mapHeight; y++)
         {
             for (int x = 0; x < hexMap.mapWidth; x++)
             {
-                Node node = new Node(true, hexMap.nodes[x, y].gridX, hexMap.nodes[x,y].gridY, hexMap.nodes[x, y].worldPos);
+                Node node = new Node(true, hexMap.nodes[0,x, y].gridX, hexMap.nodes[0,x,y].gridY, hexMap.nodes[0,x, y].worldPos);
                 myNodes[x, y] = node;
             }
         }

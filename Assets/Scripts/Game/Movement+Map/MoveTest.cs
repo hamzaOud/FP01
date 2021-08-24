@@ -12,9 +12,6 @@ public class MoveTest : MonoBehaviour
 
     public bool isMoving;
 
-    public Slider healthbar;
-    public GameObject sliderPosition;
-
     [SerializeField]
     private float attackRange = 1.5f;
 
@@ -71,14 +68,14 @@ public class MoveTest : MonoBehaviour
         
         if(attackTimer >= attackSpeed)
         {
-            if (GetComponent<UnitStats>().currentMana >= GetComponent<UnitStats>().maxMana)
+            if (GetComponent<UnitStats>().CurrentMana >= GetComponent<UnitStats>().maxMana)
             {
                 SpecialAttack();
             }
             else
             {
-                target.GetComponent<UnitStats>().currentHP -= 10;
-                GetComponent<UnitStats>().currentMana += 10;
+                target.GetComponent<UnitStats>().CurrentHP -= 10;
+                GetComponent<UnitStats>().CurrentMana += 10;
 
                 attackTimer = 0.0f;
             }
@@ -87,8 +84,8 @@ public class MoveTest : MonoBehaviour
 
     void SpecialAttack()
     {
-        GetComponent<UnitStats>().currentMana = 0;
-        target.GetComponent<UnitStats>().currentHP -= 25;
+        GetComponent<UnitStats>().CurrentMana = 0;
+        target.GetComponent<UnitStats>().CurrentHP -= 25;
         attackTimer = 0.0f;
     }
 

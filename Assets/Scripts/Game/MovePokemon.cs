@@ -134,7 +134,6 @@ public class MovePokemon : MonoBehaviour
 
             photonView.RPC("MoveUnit", RpcTarget.All, this.gameObject.GetComponent<PokemonController>().unitID,
              gameController.selectedTile.gameObject.GetComponent<Tile>().tileID, this.tile.GetComponent<Tile>().tileID, 888);
-            //MoveUnit(int unitID, int targetTileID, int startTileID, int otherunitID)
         }
         else //If the tile selected has a pokemon already placed on it
         {
@@ -189,23 +188,30 @@ public class MovePokemon : MonoBehaviour
                 targetTile = GameController.Instance.tiles[i];
             }
         }
+
+        bool isMine = (unit.GetComponent<PokemonController>().ownerID == GameController.Instance.playerID);
+
         if(targetTileID == startTileID)
         {
             unit.transform.position = unit.GetComponent<MovePokemon>().tile.transform.position;
             return;
         }
-        if (targetTile.gameObject.GetComponent<Tile>().pokemonObject == null)
+        if (targetTile.GetComponent<Tile>().pokemonObject == null)
         {//If target tile has no pokemon on it
             unit.transform.position = targetTile.transform.position;
             targetTile.GetComponent<Tile>().pokemonObject = unit;
             startTile.GetComponent<Tile>().pokemonObject = null;
+
+            if (GameController.Instance.myBoard.myTiles.Contains(targetTile))
+            {
+                GamePlayController.Instance.myUnitsOnBoard.Add(unit.GetComponent<PokemonController>());
+                unit.GetComponent<PokemonController>().isOnBoard = true;
+            }
         }
         else
         {//If target tile is already occupied
-
             //Replace the tile attribute of the still pokemon to this tile
             targetTile.GetComponent<Tile>().pokemonObject.GetComponent<MovePokemon>().tile = unit.GetComponent<MovePokemon>().tile;
-
 
             //Swap the position of the pokemons
             targetTile.GetComponent<Tile>().pokemonObject.transform.position = startTile.transform.position;
@@ -214,10 +220,27 @@ public class MovePokemon : MonoBehaviour
             //Swap the pokemonObject attributes over
             tile.gameObject.GetComponent<Tile>().pokemonObject = otherUnit;
             targetTile.GetComponent<Tile>().pokemonObject = unit;
+            otherUnit.GetComponent<PokemonController>().tilePosition = startTile.GetComponent<Tile>();
 
 
+            if (GameController.Instance.myBoard.myTiles.Contains(targetTile) &&
+                !GameController.Instance.myBoard.myTiles.Contains(startTile))
+            {
+                GamePlayController.Instance.myUnitsOnBoard.Add(unit.GetComponent<PokemonController>());
+                unit.GetComponent<PokemonController>().isOnBoard = true;
+                GamePlayController.Instance.myUnitsOnBoard.Remove(otherUnit.GetComponent<PokemonController>());
+                otherUnit.GetComponent<PokemonController>().isOnBoard = false;
+            } else if (GameController.Instance.myBoard.myTiles.Contains(startTile) &&
+                !GameController.Instance.myBoard.myTiles.Contains(targetTile))
+            {
+                GamePlayController.Instance.myUnitsOnBoard.Add(otherUnit.GetComponent<PokemonController>());
+                otherUnit.GetComponent<PokemonController>().isOnBoard = true;
+                GamePlayController.Instance.myUnitsOnBoard.Remove(unit.GetComponent<PokemonController>());
+                unit.GetComponent<PokemonController>().isOnBoard = false;
+            }
         }
 
         unit.GetComponent<MovePokemon>().tile = targetTile;
+        unit.GetComponent<PokemonController>().tilePosition = targetTile.GetComponent<Tile>() ;
     }
 }
