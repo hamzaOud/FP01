@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using System.Linq;
 
 public enum GameStage { Preparation, Combat, Loss };
 
@@ -197,7 +197,13 @@ public class GamePlayController : MonoBehaviour
                     }
                     break;
                 default:
-                    PairEnemies();
+                    Vector2[] pairs = PairEnemies();
+                    foreach(Vector2 pair in pairs)
+                    {
+
+                    }
+
+
                     break;
             }
         } else if(currentGameStage == GameStage.Preparation)
@@ -271,9 +277,63 @@ public class GamePlayController : MonoBehaviour
     
     }
 
-    public void PairEnemies()
+    public Vector2[] PairEnemies()
     {
+        //1.check if number of players is even
+        //2.if not, add one NPC ID to end of playerlist
+        //3.randomise array
+        //4.Create n pairs of players
+
+        List<int> playerIDs = new List<int>();
+        for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            playerIDs.Add(i);
+        }
+        if(playerIDs.Count % 2 != 0)
+        {//If theres an odd number of players
+            playerIDs.Add(888); //Add a NPC ID
+        }
 
 
+        List<int> randomList = new List<int>();
+
+        while (playerIDs.Count > 0)
+        {
+            int randomIndex = Random.Range(0, playerIDs.Count);
+            randomList.Add(playerIDs[randomIndex]);
+            playerIDs.RemoveAt(randomIndex);
+        }
+
+        Vector2[] pairs = new Vector2[randomList.Count/2];
+
+        for(int i = 0; i < pairs.Length; i++)
+        {
+            int j = i * 2;
+            pairs[i] = new Vector2(randomList[j], randomList[j + 1]);
+        }
+
+        return pairs;
+    }
+
+    void PlaceUnitsOnEnemysBoard(int enemyID)
+    {
+        GameController.Instance.updatePokemonsOnBoard();
+
+        foreach(GameObject unit in Data.Instance.trainer.pokemonsOnBoard)
+        {
+            RepositionUnit(unit, enemyID);
+        }
+    }
+
+    void FightEnemy(int player1ID, int player2ID)
+    {
+        if(player2ID == Data.Instance.trainer.trainerID && player1ID != 888)
+        {
+            PlaceUnitsOnEnemysBoard(player1ID);
+            GameController.Instance.MoveCamera(GameController.Instance.boardControllers[player1ID].enemyCameraPosition);
+        } else if (player1ID == 888 || player2ID == 888)
+        {
+
+        }
     }
 }

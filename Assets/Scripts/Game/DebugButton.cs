@@ -12,5 +12,6 @@ public class DebugButton : MonoBehaviour
     {
         GameController.Instance.updatePokemonsOnBoard();
         print(GameController.Instance.boardControllers[0].myTiles.Length);
+        print("Pair 0: " + GamePlayController.Instance.PairEnemies()[0]);
     }
 }

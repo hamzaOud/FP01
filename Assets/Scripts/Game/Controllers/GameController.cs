@@ -187,7 +187,7 @@ public class GameController : MonoBehaviour
         return null;
     }
 
-    private void MoveCamera(Transform cameraPosition)
+    public void MoveCamera(Transform cameraPosition)
     {
         Camera.main.gameObject.transform.position = cameraPosition.position;
         Camera.main.gameObject.transform.rotation = cameraPosition.rotation;
