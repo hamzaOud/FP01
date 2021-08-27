@@ -114,6 +114,7 @@ public class PokemonController : MonoBehaviour
     public void Reset()
     {
         this.gameObject.SetActive(true);
+        enemies.Clear();
         this.gameObject.transform.position = tilePosition.gameObject.transform.position;
         this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         stats.Reset();

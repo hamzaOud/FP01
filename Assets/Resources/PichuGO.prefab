@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pokemon: {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
-  stats: {fileID: 0}
+  stats: {fileID: 1689758522557227053}
   tilePosition: {fileID: 0}
   isDead: 0
   isAttacking: 0

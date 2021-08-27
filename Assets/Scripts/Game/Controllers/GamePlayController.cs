@@ -200,15 +200,12 @@ public class GamePlayController : MonoBehaviour
                     Vector2[] pairs = PairEnemies();
                     foreach(Vector2 pair in pairs)
                     {
-
+                        FightEnemy((int)pair.x, (int)pair.y);
                     }
-
-
                     break;
             }
         } else if(currentGameStage == GameStage.Preparation)
         {
-
         }
     }
     private void ResetBoard()
@@ -243,6 +240,7 @@ public class GamePlayController : MonoBehaviour
         foreach(PokemonController pokemonController in myUnitsOnBoard)
         {
             pokemonController.enemies.Add(enemy);
+            enemy.GetComponent<PokemonController>().enemies.Add(pokemonController.gameObject);
         }
     }
 
@@ -312,6 +310,10 @@ public class GamePlayController : MonoBehaviour
             pairs[i] = new Vector2(randomList[j], randomList[j + 1]);
         }
 
+        for(int i =0; i < pairs.Length; i++)
+        {
+            print("Pair " + i + " :" + pairs[i]);
+        }
         return pairs;
     }
 
