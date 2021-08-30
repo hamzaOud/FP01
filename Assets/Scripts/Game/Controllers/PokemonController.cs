@@ -39,29 +39,34 @@ public class PokemonController : MonoBehaviour
 
     void Update()
     {
-        if (GamePlayController.Instance.currentGameStage == GameStage.Preparation)
-        {
-            navMesh.enabled = false;
-        }
-        else navMesh.enabled = true;
-        if (isOnBoard) 
-        { 
-            if (target == null)
+            if (GamePlayController.Instance.currentGameStage == GameStage.Preparation)
             {
-                target = FindClosestTarget();
+                navMesh.enabled = false;
             }
+            else navMesh.enabled = true;
+            if (isOnBoard && GamePlayController.Instance.currentGameStage == GameStage.Combat)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    if (target == null)
+                    {
+                        target = FindClosestTarget();
+                    }
 
-            if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
-            {
-                navMesh.destination = target.transform.position;
-                navMesh.isStopped = false;
+                    if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
+                    {
+                        navMesh.destination = target.transform.position;
+                        navMesh.isStopped = false;
+                    }
+                    else
+                    {
+                        navMesh.isStopped = true;
+                    PhotonView photonView = PhotonView.Get(this);
+                    photonView.RPC("AttackTarget", RpcTarget.All);
+                    //AttackTarget();
+                    }
+                    isMoving = navMesh.isStopped;          
             }
-            else
-            {
-                navMesh.isStopped = true;
-                AttackTarget();
-            }
-            isMoving = navMesh.isStopped;
         }
     }
 
@@ -84,6 +89,7 @@ public class PokemonController : MonoBehaviour
         return enemyTarget;
     }
 
+    [PunRPC]
     void AttackTarget()
     {
         attackTimer += Time.deltaTime;

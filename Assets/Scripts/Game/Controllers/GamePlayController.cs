@@ -12,7 +12,7 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 15; //Constant that keeps track of length of preparation round
+    public const int preparationRoundTime = 25; //Constant that keeps track of length of preparation round
     public const int combatRoundTime = 15; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
@@ -173,21 +173,24 @@ public class GamePlayController : MonoBehaviour
     private void PrepareBoard()
     {
         ResetBoard();
-
+        if(currentGameStage == GameStage.Preparation)
+        {
+            GameController.Instance.MoveCamera(GameController.Instance.myBoard.myCameraPosition);
+        }
         if (currentGameStage == GameStage.Combat)
         {
             switch (roundNumber)
             {
-                case 0:
+                /*case 0:
                     for (int i = 0; i < 1; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i+3]);
+                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 3]);
                     }
                     break;
                 case 1:
                     for (int i = 0; i < 2; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i+3]);
+                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 3]);
                     }
                     break;
                 case 2:
@@ -195,18 +198,20 @@ public class GamePlayController : MonoBehaviour
                     {
                         InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
                     }
-                    break;
+                    break;*/
                 default:
-                    Vector2[] pairs = PairEnemies();
-                    foreach(Vector2 pair in pairs)
-                    {
-                        FightEnemy((int)pair.x, (int)pair.y);
+                    if (PhotonNetwork.IsMasterClient)
+                    {                    
+                        Vector2[] pairs = PairEnemies();
+                        foreach (Vector2 pair in pairs)
+                        {
+                            photonView.RPC("FightEnemy", RpcTarget.All, (int)pair.x, (int)pair.y);
+                           // FightEnemy((int)pair.x, (int)pair.y);
+                        }
                     }
                     break;
             }
-        } else if(currentGameStage == GameStage.Preparation)
-        {
-        }
+        } 
     }
     private void ResetBoard()
     {
@@ -258,21 +263,29 @@ public class GamePlayController : MonoBehaviour
     }
 
     public void RepositionUnit(GameObject unit, int enemyID)
-    {
+    {//Reposition unit on enemy's board
+
         //1.find which node its on
         //2.Find matching node on enemy's board
         //3.Find matching tile from node
         //4.position on tile and rotate
 
         Node startNode = HexTileMapGenerator.Instance.findNodeFromTile(unit.GetComponent<MovePokemon>().tile);
-        Node finalNode = HexTileMapGenerator.Instance.nodes[enemyID, HexTileMapGenerator.Instance.mapWidth - startNode.gridX,
-            HexTileMapGenerator.Instance.mapHeight - startNode.gridY];
+        Node finalNode = HexTileMapGenerator.Instance.nodes[enemyID, HexTileMapGenerator.Instance.mapWidth - startNode.gridX - 1,
+            HexTileMapGenerator.Instance.mapHeight - startNode.gridY - 1];
 
         GameObject tileObject = HexTileMapGenerator.Instance.FindTileFromNode(finalNode);
 
         unit.transform.position = tileObject.transform.position;
         unit.transform.rotation = Quaternion.Euler(0, 180, 0);
-    
+
+        GameController.Instance.updatePokemonsOnBoard();
+        unit.GetComponent<PokemonController>().enemies = GameController.Instance.trainers[enemyID].pokemonsOnBoard;
+        foreach(GameObject u in GameController.Instance.trainers[enemyID].pokemonsOnBoard)
+        {
+            u.GetComponent<PokemonController>().enemies.Add(unit);
+        }
+
     }
 
     public Vector2[] PairEnemies()
@@ -309,33 +322,39 @@ public class GamePlayController : MonoBehaviour
             int j = i * 2;
             pairs[i] = new Vector2(randomList[j], randomList[j + 1]);
         }
-
-        for(int i =0; i < pairs.Length; i++)
-        {
-            print("Pair " + i + " :" + pairs[i]);
-        }
         return pairs;
     }
 
-    void PlaceUnitsOnEnemysBoard(int enemyID)
-    {
+    void PlaceUnitsOnEnemysBoard(int player1ID, int player2ID)
+    {//Moving Player 2's units onto player 1's board
         GameController.Instance.updatePokemonsOnBoard();
 
-        foreach(GameObject unit in Data.Instance.trainer.pokemonsOnBoard)
+        foreach(GameObject unit in GameController.Instance.trainers[player2ID].pokemonsOnBoard)
         {
-            RepositionUnit(unit, enemyID);
+            RepositionUnit(unit, player1ID);
         }
     }
 
-    void FightEnemy(int player1ID, int player2ID)
+    [PunRPC]
+    public void FightEnemy(int player1ID, int player2ID)
     {
-        if(player2ID == Data.Instance.trainer.trainerID && player1ID != 888)
+        if (player1ID != 888 && player2ID != 888)
         {
-            PlaceUnitsOnEnemysBoard(player1ID);
-            GameController.Instance.MoveCamera(GameController.Instance.boardControllers[player1ID].enemyCameraPosition);
-        } else if (player1ID == 888 || player2ID == 888)
+            PlaceUnitsOnEnemysBoard(player1ID, player2ID);
+            if (player2ID == Data.Instance.trainer.trainerID)
+            {
+                GameController.Instance.MoveCamera(GameController.Instance.boardControllers[player1ID].enemyCameraPosition);
+            }
+        }
+        else if (player1ID == 888 || player2ID == 888)
         {
-
+            if (player1ID == Data.Instance.trainer.trainerID || player2ID == Data.Instance.trainer.trainerID)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    InstantiateEnemy(Data.Instance.pokemons[0].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
+                }
+            }
         }
     }
 }
