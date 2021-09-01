@@ -38,6 +38,14 @@ public class UIController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
+            for(int i = 0;i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                for(int j = 0; j < playersUnitsElements[i].pokemonImages.Length; j++)
+                {
+                    playersUnitsElements[i].pokemonImages[j].sprite = null;
+                }
+            }
+
             GameController.Instance.updatePokemonsOnBoard();
             altPanel.SetActive(true);
             for(int i =0; i < PhotonNetwork.PlayerList.Length; i++)

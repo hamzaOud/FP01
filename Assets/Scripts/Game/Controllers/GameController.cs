@@ -118,7 +118,6 @@ public class GameController : MonoBehaviour
             {
                 if(tile.GetComponent<Tile>().pokemonObject != null)
                 {
-                    print(tile.GetComponent<Tile>().tileID + " occupied");
                     GameController.Instance.trainers[i].pokemonsOnBoard.Add(tile.GetComponent<Tile>().pokemonObject);
                 }
             }

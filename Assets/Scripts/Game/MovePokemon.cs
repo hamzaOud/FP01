@@ -16,7 +16,6 @@ public class MovePokemon : MonoBehaviour
     public Pokemon pokemon;
     private GameController gameController;
 
-    public int layeringtest;
     public Data data;
     public PhotonView photonView;
 
@@ -166,7 +165,6 @@ public class MovePokemon : MonoBehaviour
         GameObject otherUnit = null;
         GameObject startTile = null;
         GameObject targetTile = null;
-        print("start tile ID: " + startTileID + ", target tile ID: " + targetTileID);
         for (int i = 0; i < pokemons.Length; i++)
         {
             if(unitID == pokemons[i].GetComponent<PokemonController>().unitID)
@@ -189,7 +187,7 @@ public class MovePokemon : MonoBehaviour
             }
         }
 
-        bool isMine = (unit.GetComponent<PokemonController>().ownerID == GameController.Instance.playerID);
+        //bool isMine = (unit.GetComponent<PokemonController>().ownerID == GameController.Instance.playerID);
 
         if(targetTileID == startTileID)
         {

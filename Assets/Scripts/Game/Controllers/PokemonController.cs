@@ -46,7 +46,7 @@ public class PokemonController : MonoBehaviour
             else navMesh.enabled = true;
             if (isOnBoard && GamePlayController.Instance.currentGameStage == GameStage.Combat)
             {
-                if (PhotonNetwork.IsMasterClient)
+                if (ownerID == Data.Instance.trainer.trainerID)
                 {
                     if (target == null)
                     {
@@ -63,7 +63,6 @@ public class PokemonController : MonoBehaviour
                         navMesh.isStopped = true;
                     PhotonView photonView = PhotonView.Get(this);
                     photonView.RPC("AttackTarget", RpcTarget.All);
-                    //AttackTarget();
                     }
                     isMoving = navMesh.isStopped;          
             }
@@ -117,18 +116,38 @@ public class PokemonController : MonoBehaviour
         attackTimer = 0.0f;
     }
 
-    public void Reset()
+
+
+    public void ResetUnit()
     {
-        this.gameObject.SetActive(true);
-        enemies.Clear();
-        this.gameObject.transform.position = tilePosition.gameObject.transform.position;
-        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-        stats.Reset();
-        isDead = false;
-        isAttacking = false;
-        isParalyzed = false;
-        isStunned = false;
-        isMoving = false;
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("Reset", RpcTarget.All, unitID);
+    }
+
+    [PunRPC]
+    public void Reset(int unidID)
+    {
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        GameObject unit = null;
+        for(int i = 0; i < units.Length; i++)
+        {
+            if(units[i].GetComponent<PokemonController>().unitID == unitID)
+            {
+                unit = units[i];
+                break;
+            }
+        }
+
+        unit.SetActive(true);
+        unit.GetComponent<PokemonController>().enemies.Clear();
+        unit.transform.position = tilePosition.gameObject.transform.position;
+        unit.transform.rotation = Quaternion.Euler(0, 0, 0);
+        unit.GetComponent<PokemonController>().stats.Reset();
+        unit.GetComponent<PokemonController>().isDead = false;
+        unit.GetComponent<PokemonController>().isAttacking = false;
+        unit.GetComponent<PokemonController>().isParalyzed = false;
+        unit.GetComponent<PokemonController>().isStunned = false;
+        unit.GetComponent<PokemonController>().isMoving = false;
     }
 
     public void TakeDamage(int damage)

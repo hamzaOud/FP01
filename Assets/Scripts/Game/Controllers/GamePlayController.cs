@@ -12,7 +12,7 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 25; //Constant that keeps track of length of preparation round
+    public const int preparationRoundTime = 15; //Constant that keeps track of length of preparation round
     public const int combatRoundTime = 15; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
@@ -172,9 +172,10 @@ public class GamePlayController : MonoBehaviour
 
     private void PrepareBoard()
     {
-        ResetBoard();
+        //ResetBoard();
         if(currentGameStage == GameStage.Preparation)
         {
+            ResetBoard();
             GameController.Instance.MoveCamera(GameController.Instance.myBoard.myCameraPosition);
         }
         if (currentGameStage == GameStage.Combat)
@@ -205,8 +206,8 @@ public class GamePlayController : MonoBehaviour
                         Vector2[] pairs = PairEnemies();
                         foreach (Vector2 pair in pairs)
                         {
+                            Debug.Log(pair.x + " is fighting " + pair.y + " and should move his camera");
                             photonView.RPC("FightEnemy", RpcTarget.All, (int)pair.x, (int)pair.y);
-                           // FightEnemy((int)pair.x, (int)pair.y);
                         }
                     }
                     break;
@@ -218,7 +219,7 @@ public class GamePlayController : MonoBehaviour
         foreach(PokemonController enemy in enemyPokemons)
         {
             if(enemy.ownerID != 888)
-            enemy.Reset();
+            enemy.ResetUnit();
             else
             {
                 Destroy(enemy.gameObject);
@@ -227,7 +228,7 @@ public class GamePlayController : MonoBehaviour
         enemyPokemons.Clear();
         foreach(PokemonController unit in myUnitsOnBoard)
         {
-            unit.Reset();
+            unit.ResetUnit();
         }
     }
 
@@ -241,7 +242,6 @@ public class GamePlayController : MonoBehaviour
         enemy.GetComponent<PokemonController>().ownerID = 888;
         enemy.GetComponent<PokemonController>().isOnBoard = true;
 
-        //Change this to 
         foreach(PokemonController pokemonController in myUnitsOnBoard)
         {
             pokemonController.enemies.Add(enemy);
@@ -340,11 +340,15 @@ public class GamePlayController : MonoBehaviour
     {
         if (player1ID != 888 && player2ID != 888)
         {
-            PlaceUnitsOnEnemysBoard(player1ID, player2ID);
-            if (player2ID == Data.Instance.trainer.trainerID)
+            Debug.Log("Gamecontroller.instance.playerID = " + GameController.Instance.playerID + " player2id=" + player2ID);
+            if (player2ID == GameController.Instance.playerID)
             {
+                Debug.Log("Shoud move my camera to enemy's position"); //Bugfix here
                 GameController.Instance.MoveCamera(GameController.Instance.boardControllers[player1ID].enemyCameraPosition);
             }
+            PlaceUnitsOnEnemysBoard(player1ID, player2ID);
+            
+            
         }
         else if (player1ID == 888 || player2ID == 888)
         {

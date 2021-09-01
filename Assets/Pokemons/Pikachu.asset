@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aed1cad8a27f44bcb01a04457c964a5, type: 3}
   m_Name: Pikachu
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: f4eb45276c0dc44c1b8cd1cf69bea177, type: 3}
+  image: {fileID: 21300000, guid: 86010b011446a2b499c36aa0a8cef058, type: 3}
   price: 5
   sellPrice: 4
   name: Pikachu
@@ -20,4 +20,4 @@ MonoBehaviour:
   evolution: {fileID: 11400000, guid: b1569bb9bfb5c4328876f2c9061ada5f, type: 2}
   type: 07000000
   pokeClass: 04000000
-  pokemonID: 2
+  pokemonID: 37

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aed1cad8a27f44bcb01a04457c964a5, type: 3}
-  m_Name: Pichu
+  m_Name: Blastoise
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 062c8a4fa8b6dd443ae881c46c33f312, type: 3}
-  price: 2
-  sellPrice: 1
-  name: Pichu
-  model: {fileID: 2796612708704590168, guid: 89201acfd0e2d46699f8c08536df686a, type: 3}
-  evolution: {fileID: 11400000, guid: 7f0498192286b4f47a3f033178b454a7, type: 2}
-  type: 07000000
-  pokeClass: 04000000
-  pokemonID: 36
+  image: {fileID: 21300000, guid: 15528000bc22a60439860cc086173f7c, type: 3}
+  price: 0
+  sellPrice: 9
+  name: Blastoise
+  model: {fileID: 1513910537952893471, guid: 7d30a064862d52440ae813b8809d9d16, type: 3}
+  evolution: {fileID: 0}
+  type: 03000000
+  pokeClass: 02000000
+  pokemonID: 9

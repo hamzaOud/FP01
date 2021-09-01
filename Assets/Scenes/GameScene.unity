@@ -5485,11 +5485,15 @@ MonoBehaviour:
   pokemons:
   - {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
   - {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
+  - {fileID: 11400000, guid: 494c230d5fa99b340915b4fe8ba14db9, type: 2}
   pokemonsDatabase:
   - {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
   - {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
   - {fileID: 11400000, guid: 7f0498192286b4f47a3f033178b454a7, type: 2}
   - {fileID: 11400000, guid: b1569bb9bfb5c4328876f2c9061ada5f, type: 2}
+  - {fileID: 11400000, guid: 494c230d5fa99b340915b4fe8ba14db9, type: 2}
+  - {fileID: 11400000, guid: 84160743f26312d4a909fb481ee940d8, type: 2}
+  - {fileID: 11400000, guid: c187f77e1d67aa5449fa9ddc15ad5743, type: 2}
 --- !u!114 &656400978
 MonoBehaviour:
   m_ObjectHideFlags: 0
