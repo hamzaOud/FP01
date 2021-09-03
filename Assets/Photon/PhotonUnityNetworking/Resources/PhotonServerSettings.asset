@@ -48,6 +48,10 @@ MonoBehaviour:
   - FightEnemy
   - AttackTarget
   - Reset
+  - TakeDamage
+  - AddMana
+  - DealDamage
+  - ResetMana
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

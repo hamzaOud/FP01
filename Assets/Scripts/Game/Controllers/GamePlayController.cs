@@ -13,9 +13,10 @@ public class GamePlayController : MonoBehaviour
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
     public const int preparationRoundTime = 15; //Constant that keeps track of length of preparation round
-    public const int combatRoundTime = 15; //Constant that keeps track of length of combat round
+    public const int combatRoundTime = 30; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
+    public int enemyID;
 
     public int[] baseIncome = { 2, 3, 4, 5, 5, 5, 5, 5, 5 };//Base amount that you gain depending on level
 
@@ -206,7 +207,6 @@ public class GamePlayController : MonoBehaviour
                         Vector2[] pairs = PairEnemies();
                         foreach (Vector2 pair in pairs)
                         {
-                            Debug.Log(pair.x + " is fighting " + pair.y + " and should move his camera");
                             photonView.RPC("FightEnemy", RpcTarget.All, (int)pair.x, (int)pair.y);
                         }
                     }
@@ -254,7 +254,7 @@ public class GamePlayController : MonoBehaviour
         bool value = true;
         for(int i = 0; i < enemyPokemons.Count; i++)
         {
-            if (enemyPokemons[i].isDead == false)
+            if (enemyPokemons[i].isAlive)
             {
                 value = false;
             }
@@ -327,7 +327,24 @@ public class GamePlayController : MonoBehaviour
 
     void PlaceUnitsOnEnemysBoard(int player1ID, int player2ID)
     {//Moving Player 2's units onto player 1's board
+        
         GameController.Instance.updatePokemonsOnBoard();
+        if (GameController.Instance.playerID == player1ID)
+        {
+            foreach(GameObject unit in GameController.Instance.trainers[player2ID].pokemonsOnBoard)
+            {
+                GamePlayController.Instance.enemyPokemons.Add(unit.GetComponent<PokemonController>());
+            }
+        }
+        else if (GameController.Instance.playerID == player2ID)
+        {
+            foreach (GameObject unit in GameController.Instance.trainers[player1ID].pokemonsOnBoard)
+            {
+                GamePlayController.Instance.enemyPokemons.Add(unit.GetComponent<PokemonController>());
+            }
+        }
+
+        
 
         foreach(GameObject unit in GameController.Instance.trainers[player2ID].pokemonsOnBoard)
         {
@@ -338,17 +355,23 @@ public class GamePlayController : MonoBehaviour
     [PunRPC]
     public void FightEnemy(int player1ID, int player2ID)
     {
+
+        if(player1ID == GameController.Instance.playerID)
+        {
+            GamePlayController.Instance.enemyID = player2ID;
+        } else if(player2ID == GameController.Instance.playerID)
+        {
+            GamePlayController.Instance.enemyID = player1ID;
+        }
+
         if (player1ID != 888 && player2ID != 888)
         {
             Debug.Log("Gamecontroller.instance.playerID = " + GameController.Instance.playerID + " player2id=" + player2ID);
             if (player2ID == GameController.Instance.playerID)
             {
-                Debug.Log("Shoud move my camera to enemy's position"); //Bugfix here
                 GameController.Instance.MoveCamera(GameController.Instance.boardControllers[player1ID].enemyCameraPosition);
             }
             PlaceUnitsOnEnemysBoard(player1ID, player2ID);
-            
-            
         }
         else if (player1ID == 888 || player2ID == 888)
         {

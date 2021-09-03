@@ -143,7 +143,9 @@ GameObject:
   - component: {fileID: 3776047624366591127}
   - component: {fileID: 6021944302972513669}
   - component: {fileID: 3841624504702062033}
-  - component: {fileID: -8641141306299214768}
+  - component: {fileID: 7099374952189500325}
+  - component: {fileID: -8400158229466566336}
+  - component: {fileID: 5588057784516717185}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Units
@@ -271,7 +273,7 @@ MonoBehaviour:
   SpecialAttack: 0
   SpecialDefense: 0
   AttackSpeed: 0
---- !u!114 &-8641141306299214768
+--- !u!114 &7099374952189500325
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,23 +282,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 7411460239857822182}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd31a7429092d48f6beac073288fc274, type: 3}
+  m_Script: {fileID: 11500000, guid: e59d9660fb2f7544db73d085fa7a69dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pokemon: {fileID: 0}
-  stats: {fileID: 3841624504702062033}
-  tilePosition: {fileID: 0}
-  isDead: 0
-  isAttacking: 0
-  isMoving: 0
-  isParalyzed: 0
-  isStunned: 0
-  unitID: 0
   target: {fileID: 0}
   enemies: []
+  isMoving: 0
+  isAlive: 1
+  unitID: 0
+  ownerPlayerID: 1
   attackRange: 1.5
   attackSpeed: 2
   attackTimer: 0
+--- !u!114 &-8400158229466566336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411460239857822182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 5588057784516717185}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &5588057784516717185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411460239857822182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!1 &9182104708571291409
 GameObject:
   m_ObjectHideFlags: 0

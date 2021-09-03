@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 //Script that lets you hover and select a tile
 public class TileSelector : MonoBehaviour
@@ -19,9 +20,13 @@ public class TileSelector : MonoBehaviour
     {//When mouse enters the tile during preparation round
         if (GamePlayController.Instance.currentGameStage == GameStage.Preparation)
         {//Give it a red color
-            GetComponent<MeshRenderer>().material.color = Color.red;
-            //Assign this value to the selected tile property
-            gameController.selectedTile = this.gameObject;
+            if (GameController.Instance.myBoard.myBench.Contains(this.gameObject) || gameController.myBoard.myTiles.Contains(this.gameObject))
+            {
+              GetComponent<MeshRenderer>().material.color = Color.red;
+              //Assign this value to the selected tile property
+              gameController.selectedTile = this.gameObject;
+            }
+            
         }
     }
 

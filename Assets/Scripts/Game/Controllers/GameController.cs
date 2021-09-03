@@ -119,6 +119,7 @@ public class GameController : MonoBehaviour
                 if(tile.GetComponent<Tile>().pokemonObject != null)
                 {
                     GameController.Instance.trainers[i].pokemonsOnBoard.Add(tile.GetComponent<Tile>().pokemonObject);
+                    tile.GetComponent<Tile>().pokemonObject.GetComponent<PokemonController>().isOnBoard = true;
                 }
             }
         }

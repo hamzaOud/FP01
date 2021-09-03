@@ -11,7 +11,7 @@ public class PokemonController : MonoBehaviour
 
     public Tile tilePosition;
 
-    public bool isDead;
+    public bool isAlive;
     public bool isAttacking;
     public bool isMoving;
     public bool isParalyzed;
@@ -24,6 +24,7 @@ public class PokemonController : MonoBehaviour
     private NavMeshAgent navMesh;
     public GameObject target;
     public List<GameObject> enemies;
+    private PhotonView photonView;
 
     [SerializeField]
     private float attackRange = 1.5f;
@@ -35,10 +36,13 @@ public class PokemonController : MonoBehaviour
     void Start()
     {
         navMesh = GetComponent<NavMeshAgent>();
+        photonView = PhotonView.Get(this);
     }
 
     void Update()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
             if (GamePlayController.Instance.currentGameStage == GameStage.Preparation)
             {
                 navMesh.enabled = false;
@@ -61,12 +65,16 @@ public class PokemonController : MonoBehaviour
                     else
                     {
                         navMesh.isStopped = true;
-                    PhotonView photonView = PhotonView.Get(this);
-                    photonView.RPC("AttackTarget", RpcTarget.All);
+                        AttackTarget();
                     }
-                    isMoving = navMesh.isStopped;          
+                    isMoving = navMesh.isStopped;
+                }
             }
         }
+        else if(!PhotonNetwork.IsMasterClient && GamePlayController.Instance.currentGameStage == GameStage.Preparation)
+            {
+                navMesh.enabled = false;
+            }
     }
 
     GameObject FindClosestTarget()
@@ -88,7 +96,6 @@ public class PokemonController : MonoBehaviour
         return enemyTarget;
     }
 
-    [PunRPC]
     void AttackTarget()
     {
         attackTimer += Time.deltaTime;
@@ -102,8 +109,8 @@ public class PokemonController : MonoBehaviour
             }
             else
             {
-                target.GetComponent<PokemonController>().TakeDamage(10);
-                AddMana(10);
+                photonView.RPC("DealDamage", RpcTarget.All, target.GetComponent<PokemonController>().unitID, 10);
+                photonView.RPC("AddMana", RpcTarget.All, unitID, 10);
                 attackTimer = 0.0f;
             }
         }
@@ -111,12 +118,60 @@ public class PokemonController : MonoBehaviour
 
     void SpecialAttack()
     {
-        stats.CurrentMana = 0;
-        target.GetComponent<PokemonController>().TakeDamage(25);
+        photonView.RPC("ResetMana", RpcTarget.All, unitID);
+        photonView.RPC("DealDamage", RpcTarget.All, target.GetComponent<PokemonController>().unitID, 25);
         attackTimer = 0.0f;
     }
 
+    [PunRPC]
+    public void DealDamage(int unitID, int amount)
+    {
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        GameObject unit = null;
+        for (int i = 0; i < units.Length; i++)
+        {
+            if (unitID == units[i].GetComponent<PokemonController>().unitID)
+            {
+                unit = units[i];
+                break;
+            }
+        }
+        unit.GetComponent<UnitStats>().CurrentHP -= amount;
+    }
 
+    [PunRPC]
+    public void AddMana(int uniID, int amount)
+    {
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        GameObject unit = null;
+        for (int i = 0; i < units.Length; i++)
+        {
+            if (unitID == units[i].GetComponent<PokemonController>().unitID)
+            {
+                unit = units[i];
+                break;
+            }
+        }
+
+        unit.GetComponent<UnitStats>().CurrentMana += amount;
+    }
+
+    [PunRPC]
+    public void ResetMana(int unitID)
+    {
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        GameObject unit = null;
+        for (int i = 0; i < units.Length; i++)
+        {
+            if (unitID == units[i].GetComponent<PokemonController>().unitID)
+            {
+                unit = units[i];
+                break;
+            }
+        }
+        unit.GetComponent<UnitStats>().CurrentMana = 0;
+
+    }
 
     public void ResetUnit()
     {
@@ -137,13 +192,13 @@ public class PokemonController : MonoBehaviour
                 break;
             }
         }
-
+        unit.GetComponent<PokemonController>().target = null;
         unit.SetActive(true);
         unit.GetComponent<PokemonController>().enemies.Clear();
         unit.transform.position = tilePosition.gameObject.transform.position;
         unit.transform.rotation = Quaternion.Euler(0, 0, 0);
         unit.GetComponent<PokemonController>().stats.Reset();
-        unit.GetComponent<PokemonController>().isDead = false;
+        unit.GetComponent<PokemonController>().isAlive = true;
         unit.GetComponent<PokemonController>().isAttacking = false;
         unit.GetComponent<PokemonController>().isParalyzed = false;
         unit.GetComponent<PokemonController>().isStunned = false;
@@ -157,11 +212,6 @@ public class PokemonController : MonoBehaviour
         {
             Die();
         }
-    }
-
-    public void AddMana(int amount)
-    {
-        stats.CurrentMana += amount;
     }
 
     private void Die()
