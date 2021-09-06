@@ -10,7 +10,7 @@ public class UIController : MonoBehaviour
 
     public PlayerUIElement[] playerUIElements;
     public PlayersUnitsElement[] playersUnitsElements;
-
+    public Transform bonusPanelTransform;
 
     public GameObject statsCanvas;
     public Text pokemonNameText;
@@ -30,6 +30,13 @@ public class UIController : MonoBehaviour
         { //Show players names and levels on players canvas
             playerUIElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName
             + " Level " + GameController.Instance.trainers[i].level.ToString();
+        }
+        if (PhotonNetwork.PlayerList.Length < 8)
+        {
+            for (int i = PhotonNetwork.PlayerList.Length; i < 8; i++)
+            {
+                playerUIElements[i].gameObject.SetActive(false);
+             }
         }
         altPanel.SetActive(false);
     }
@@ -123,12 +130,11 @@ public class UIController : MonoBehaviour
         //Create a new UI element for each unique type
         foreach (KeyValuePair<PokeType, int> keyValuePair in GamePlayController.Instance.pokeTypeCounter)
         {
-            GameObject uielement = Instantiate(bonusPrefab, panel.transform);
+            GameObject uielement = Instantiate(bonusPrefab, bonusPanelTransform);
             uielement.GetComponent<BonusUIElement>().bonusName.text = keyValuePair.Key.ToString();
             uielement.GetComponent<BonusUIElement>().bonusCount.text = keyValuePair.Value.ToString();
-
+            
         }
-
     }
 
     public void UpdateUI()
@@ -140,6 +146,8 @@ public class UIController : MonoBehaviour
         {
             playerUIElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName
             + " Level " + GameController.Instance.trainers[i].level.ToString();
+
+            playerUIElements[i].playerHP.value = (float)GameController.Instance.trainers[i].currentHP / (float)100;
         }
     }
 }

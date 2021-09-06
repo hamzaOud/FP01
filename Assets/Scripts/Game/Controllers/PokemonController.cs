@@ -11,7 +11,7 @@ public class PokemonController : MonoBehaviour
 
     public Tile tilePosition;
 
-    public bool isAlive;
+    public bool isAlive = true;
     public bool isAttacking;
     public bool isMoving;
     public bool isParalyzed;
@@ -50,7 +50,7 @@ public class PokemonController : MonoBehaviour
             else navMesh.enabled = true;
             if (isOnBoard && GamePlayController.Instance.currentGameStage == GameStage.Combat)
             {
-                if (ownerID == Data.Instance.trainer.trainerID)
+                //if (ownerID == Data.Instance.trainer.trainerID)
                 {
                     if (target == null)
                     {
@@ -136,7 +136,17 @@ public class PokemonController : MonoBehaviour
                 break;
             }
         }
-        unit.GetComponent<UnitStats>().CurrentHP -= amount;
+        unit.GetComponent<PokemonController>().TakeDamage(amount);
+    }
+
+    public void TakeDamage(int amount)
+    {
+        GetComponent<UnitStats>().CurrentHP -= amount;
+
+        if(GetComponent<UnitStats>().CurrentHP <= 0)
+        {
+            Die();
+        }
     }
 
     [PunRPC]
@@ -179,6 +189,21 @@ public class PokemonController : MonoBehaviour
         photonView.RPC("Reset", RpcTarget.All, unitID);
     }
 
+    public void ResetTest()
+    {
+        GetComponent<PokemonController>().target = null;
+        this.gameObject.SetActive(true);
+        //this.gameObject.active = true;
+        GetComponent<PokemonController>().enemies.Clear();
+        transform.position = tilePosition.gameObject.transform.position;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        GetComponent<PokemonController>().stats.Reset();
+        GetComponent<PokemonController>().isAlive = true;
+        GetComponent<PokemonController>().isAttacking = false;
+        GetComponent<PokemonController>().isParalyzed = false;
+        GetComponent<PokemonController>().isStunned = false;
+        GetComponent<PokemonController>().isMoving = false;
+    }
     [PunRPC]
     public void Reset(int unidID)
     {
@@ -205,19 +230,12 @@ public class PokemonController : MonoBehaviour
         unit.GetComponent<PokemonController>().isMoving = false;
     }
 
-    public void TakeDamage(int damage)
-    {
-        GetComponent<UnitStats>().CurrentHP -= damage;
-        if(stats.CurrentHP <= 0)
-        {
-            Die();
-        }
-    }
-
     private void Die()
     {
-        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        isAlive = false;
 
+
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
         foreach(GameObject u in units)
         {
             if(u.GetComponent<PokemonController>().target == this.gameObject)
@@ -225,6 +243,17 @@ public class PokemonController : MonoBehaviour
                 u.GetComponent<PokemonController>().target = null;
             }
         }
+        
         this.gameObject.SetActive(false);
+
+        if (ownerID != 888)
+        {
+            if (GamePlayController.Instance.AreAllMyUnitsDead())
+            {
+                print("You should be losing HP");
+                if (PhotonNetwork.IsMasterClient)
+                    GameController.Instance.ReduceTrainerHP(ownerID, 10);
+            }
+        }
     }
 }

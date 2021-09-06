@@ -12,8 +12,8 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 15; //Constant that keeps track of length of preparation round
-    public const int combatRoundTime = 30; //Constant that keeps track of length of combat round
+    public const int preparationRoundTime = 30; //Constant that keeps track of length of preparation round
+    public const int combatRoundTime = 15; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
     public int enemyID;
@@ -216,7 +216,7 @@ public class GamePlayController : MonoBehaviour
     }
     private void ResetBoard()
     {
-        foreach(PokemonController enemy in enemyPokemons)
+        /*foreach(PokemonController enemy in enemyPokemons)
         {
             if(enemy.ownerID != 888)
             enemy.ResetUnit();
@@ -229,6 +229,21 @@ public class GamePlayController : MonoBehaviour
         foreach(PokemonController unit in myUnitsOnBoard)
         {
             unit.ResetUnit();
+        }*/
+        enemyPokemons.Clear();
+        for(int i = 0; i < GameController.Instance.trainers.Length; i++)
+        {
+            foreach(GameObject unit in GameController.Instance.trainers[i].pokemonsOnBoard)
+            {
+                unit.SetActive(true);
+            }
+        }
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        foreach(GameObject u in units)
+        {
+            if (u.GetComponent<PokemonController>().ownerID == 888)
+                Destroy(u);
+            else u.GetComponent<PokemonController>().ResetTest();
         }
     }
 
@@ -241,6 +256,8 @@ public class GamePlayController : MonoBehaviour
         enemy.GetComponent<MovePokemon>().tile = tile;
         enemy.GetComponent<PokemonController>().ownerID = 888;
         enemy.GetComponent<PokemonController>().isOnBoard = true;
+        enemy.GetComponent<PokemonController>().unitID = GameController.Instance.npcUnitID;
+        GameController.Instance.incrementNPCUnitID();
 
         foreach(PokemonController pokemonController in myUnitsOnBoard)
         {
@@ -249,15 +266,17 @@ public class GamePlayController : MonoBehaviour
         }
     }
 
-    bool AreAllEnemiesDead()
+    public bool AreAllMyUnitsDead()
     {
         bool value = true;
-        for(int i = 0; i < enemyPokemons.Count; i++)
+        print(myUnitsOnBoard.Count);
+        for(int i = 0; i < myUnitsOnBoard.Count; i++)
         {
-            if (enemyPokemons[i].isAlive)
+            if (myUnitsOnBoard[i].isAlive)
             {
                 value = false;
             }
+            print(myUnitsOnBoard[i].isAlive);
         }
         return value;
     }

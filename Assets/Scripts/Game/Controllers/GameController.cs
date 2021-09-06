@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     public Transform enemyCameraPosition;
 
     public int nextViewID = 10;
+    public int npcUnitID = 10000;
 
     private void Start()
     {
@@ -39,6 +40,16 @@ public class GameController : MonoBehaviour
 
         MoveCamera(myBoard.myCameraPosition);
 
+    }
+
+    public void incrementNPCUnitID()
+    {
+        PhotonView.Get(this).RPC("IncrementNPCID", RpcTarget.All);
+    }
+    [PunRPC]
+    public void IncrementNPCID()
+    {
+        npcUnitID++;
     }
 
     [PunRPC]
@@ -77,7 +88,8 @@ public class GameController : MonoBehaviour
             spawnPoint.GetComponent<Tile>().pokemonObject = newPokemon;
             newPokemon.GetComponent<MovePokemon>().tile = spawnPoint;
             newPokemon.GetComponent<PokemonController>().unitID = GameObject.FindGameObjectsWithTag("Units").Length;
-            newPokemon.GetComponent<PokemonController>().ownerID = playerID;
+            newPokemon.GetComponent<PokemonController>().ownerID = trainerID;
+            //newPokemon.GetComponent<PokemonController>().ownerID = playerID;
 
             if (trainers[trainerID].pokedex.TryGetValue(pokemon, out value))
             {//If we already have one of these pokemons, add new one to list
@@ -218,6 +230,18 @@ public class GameController : MonoBehaviour
                 trainers[i].LevelUP();
             }
         }
+    }
+
+    public void ReduceTrainerHP(int trainerID, int amount)
+    {
+        PhotonView.Get(this).RPC("LoseHP", RpcTarget.All, trainerID, amount);
+    }
+
+    [PunRPC]
+    public void LoseHP(int trainerID, int amount)
+    {
+        trainers[trainerID].currentHP -= amount;
+        UIController.Instance.UpdateUI();
     }
 
     private void ConfigureBoardController()

@@ -11,6 +11,7 @@ public class Trainer
     public List<GameObject> pokemonsOnBoard; //List if all pokemons on the board
     public int trainerID;
     public GameObject[] spawnPoints;
+    public int currentHP;
 
     public Trainer(int playerID)
     {
@@ -21,6 +22,7 @@ public class Trainer
         pokemonsOnBoard = new List<GameObject>();
         spawnPoints = new GameObject[GameController.Instance.myBoard.myBench.Length + GameController.Instance.myBoard.myTiles.Length];
         trainerID = playerID;
+        currentHP = 100;
     }
 
     public void LevelUP()
