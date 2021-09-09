@@ -91,7 +91,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 7787549383506306747}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -109,7 +109,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
   pokemon: {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
-  layeringtest: 0
   data: {fileID: 0}
   photonView: {fileID: 424577937395997279}
 --- !u!114 &8411703186499126673
@@ -165,7 +164,7 @@ MonoBehaviour:
   pokemon: {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
   stats: {fileID: 1689758522557227053}
   tilePosition: {fileID: 0}
-  isDead: 0
+  isAlive: 1
   isAttacking: 0
   isMoving: 0
   isParalyzed: 0

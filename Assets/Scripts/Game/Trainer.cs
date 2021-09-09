@@ -12,6 +12,7 @@ public class Trainer
     public int trainerID;
     public GameObject[] spawnPoints;
     public int currentHP;
+    public bool isAlive;
 
     public Trainer(int playerID)
     {
@@ -22,7 +23,8 @@ public class Trainer
         pokemonsOnBoard = new List<GameObject>();
         spawnPoints = new GameObject[GameController.Instance.myBoard.myBench.Length + GameController.Instance.myBoard.myTiles.Length];
         trainerID = playerID;
-        currentHP = 100;
+        currentHP = 20;
+        isAlive = true;
     }
 
     public void LevelUP()

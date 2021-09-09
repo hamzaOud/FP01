@@ -155,7 +155,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
   pokemon: {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
-  layeringtest: 0
   data: {fileID: 0}
   photonView: {fileID: 4018360241609028462}
 --- !u!65 &4711019089701612198
@@ -234,7 +233,7 @@ MonoBehaviour:
   pokemon: {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
   stats: {fileID: 2653896860999335118}
   tilePosition: {fileID: 0}
-  isDead: 0
+  isAlive: 1
   isAttacking: 0
   isMoving: 0
   isParalyzed: 0

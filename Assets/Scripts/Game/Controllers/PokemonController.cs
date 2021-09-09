@@ -183,19 +183,15 @@ public class PokemonController : MonoBehaviour
 
     }
 
-    public void ResetUnit()
-    {
-        PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("Reset", RpcTarget.All, unitID);
-    }
+
 
     public void ResetTest()
     {
-        GetComponent<PokemonController>().target = null;
         this.gameObject.SetActive(true);
-        //this.gameObject.active = true;
+        GetComponent<PokemonController>().target = null;
         GetComponent<PokemonController>().enemies.Clear();
-        transform.position = tilePosition.gameObject.transform.position;
+        //transform.position = tilePosition.gameObject.transform.position;
+        transform.position = this.gameObject.GetComponent<MovePokemon>().tile.transform.position;
         transform.rotation = Quaternion.Euler(0, 0, 0);
         GetComponent<PokemonController>().stats.Reset();
         GetComponent<PokemonController>().isAlive = true;
@@ -203,31 +199,6 @@ public class PokemonController : MonoBehaviour
         GetComponent<PokemonController>().isParalyzed = false;
         GetComponent<PokemonController>().isStunned = false;
         GetComponent<PokemonController>().isMoving = false;
-    }
-    [PunRPC]
-    public void Reset(int unidID)
-    {
-        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
-        GameObject unit = null;
-        for(int i = 0; i < units.Length; i++)
-        {
-            if(units[i].GetComponent<PokemonController>().unitID == unitID)
-            {
-                unit = units[i];
-                break;
-            }
-        }
-        unit.GetComponent<PokemonController>().target = null;
-        unit.SetActive(true);
-        unit.GetComponent<PokemonController>().enemies.Clear();
-        unit.transform.position = tilePosition.gameObject.transform.position;
-        unit.transform.rotation = Quaternion.Euler(0, 0, 0);
-        unit.GetComponent<PokemonController>().stats.Reset();
-        unit.GetComponent<PokemonController>().isAlive = true;
-        unit.GetComponent<PokemonController>().isAttacking = false;
-        unit.GetComponent<PokemonController>().isParalyzed = false;
-        unit.GetComponent<PokemonController>().isStunned = false;
-        unit.GetComponent<PokemonController>().isMoving = false;
     }
 
     private void Die()

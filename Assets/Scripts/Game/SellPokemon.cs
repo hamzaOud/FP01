@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 public class SellPokemon : MonoBehaviour
 {
@@ -21,13 +22,32 @@ public class SellPokemon : MonoBehaviour
     void Update()
     {
         //Sell champ
-        if (isHovering && Input.GetKeyDown(KeyCode.E))
+        if (isHovering && Input.GetKeyDown(KeyCode.E) && GamePlayController.Instance.currentGameStage == GameStage.Preparation)
         {
             Data.Instance.trainer.balance += pokemon.sellPrice;
             shopController.updateUI();
             RemoveObjectFromData();
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+
+            PhotonView.Get(this).RPC("SellUnit", RpcTarget.All, 
+            this.gameObject.GetComponent<PokemonController>().unitID, GameController.Instance.playerID);
         }
+    }
+    
+    [PunRPC]
+    public void SellUnit(int unitID, int ownerID)
+    {
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Units");
+        foreach(GameObject unit in units)
+        {
+            if(unit.GetComponent<PokemonController>().unitID == unitID)
+            {
+                unit.GetComponent<PokemonController>().tilePosition.GetComponent<Tile>().pokemonObject = null;
+                Destroy(unit);
+                break;
+            }
+        }
+        GameController.Instance.updatePokemonsOnBoard();
     }
 
     void RemoveObjectFromData()

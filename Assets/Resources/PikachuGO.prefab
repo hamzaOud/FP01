@@ -130,7 +130,7 @@ MonoBehaviour:
   pokemon: {fileID: 11400000, guid: 7f0498192286b4f47a3f033178b454a7, type: 2}
   stats: {fileID: 0}
   tilePosition: {fileID: 0}
-  isDead: 0
+  isAlive: 1
   isAttacking: 0
   isMoving: 0
   isParalyzed: 0

@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour
     public Text pokemonTypeText;
     public Text pokemonClassText;
     public GameObject altPanel;
+    public EndScreen endCanvas;
 
     public GameObject bonusPrefab; //Prefab used to show class and types on board
 
@@ -39,6 +40,7 @@ public class UIController : MonoBehaviour
              }
         }
         altPanel.SetActive(false);
+        endCanvas.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -134,6 +136,12 @@ public class UIController : MonoBehaviour
             uielement.GetComponent<BonusUIElement>().bonusName.text = keyValuePair.Key.ToString();
             uielement.GetComponent<BonusUIElement>().bonusCount.text = keyValuePair.Value.ToString();
             
+        }
+        foreach(KeyValuePair<PokeClass,int> keyValue in GamePlayController.Instance.pokeClassCounter)
+        {
+            GameObject classBonus = Instantiate(bonusPrefab, bonusPanelTransform);
+            classBonus.GetComponent<BonusUIElement>().bonusName.text = keyValue.Key.ToString();
+            classBonus.GetComponent<BonusUIElement>().bonusCount.text = keyValue.Value.ToString();
         }
     }
 

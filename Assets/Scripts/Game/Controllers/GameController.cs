@@ -109,8 +109,6 @@ public class GameController : MonoBehaviour
     IEnumerator Evolve(Pokemon pokemon, int playerID)
     {
         yield return new WaitForSeconds(0.1f);
-        print("should spawn " + pokemon.name);
-        //spawnChampion(pokemon);
         Spawn(playerID, pokemon.pokemonID);
     }
 
@@ -132,6 +130,22 @@ public class GameController : MonoBehaviour
                 {
                     GameController.Instance.trainers[i].pokemonsOnBoard.Add(tile.GetComponent<Tile>().pokemonObject);
                     tile.GetComponent<Tile>().pokemonObject.GetComponent<PokemonController>().isOnBoard = true;
+                }
+            }
+            foreach(GameObject tile in GameController.Instance.boardControllers[i].myBench)
+            {
+                if(tile.GetComponent<Tile>().pokemonObject != null)
+                {
+                    tile.GetComponent<Tile>().pokemonObject.GetComponent<PokemonController>().isOnBoard = false;
+                }
+            }
+            if(i == playerID)
+            {
+                GamePlayController.Instance.myUnitsOnBoard.Clear();
+                for (int j = 0; j < trainers[i].pokemonsOnBoard.Count; j++)
+                {
+                    GamePlayController.Instance.myUnitsOnBoard.Add(trainers[i].
+                        pokemonsOnBoard[j].GetComponent<PokemonController>());
                 }
             }
         }
@@ -241,7 +255,38 @@ public class GameController : MonoBehaviour
     public void LoseHP(int trainerID, int amount)
     {
         trainers[trainerID].currentHP -= amount;
+        if(trainers[trainerID].currentHP <= 0)
+        {
+            trainers[trainerID].isAlive = false;
+            if(GameController.Instance.playerID == trainerID)
+            {
+                UIController.Instance.endCanvas.endText.text = "YOU LOST!";
+                UIController.Instance.endCanvas.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (CheckIfAllEnemiesDead())
+                {
+                    UIController.Instance.endCanvas.endText.text = "YOU WON!";
+                    UIController.Instance.endCanvas.gameObject.SetActive(true);
+                }
+            }
+        }
         UIController.Instance.UpdateUI();
+    }
+
+
+    public bool CheckIfAllEnemiesDead()
+    {
+        bool checker = true;
+        for (int i = 0; i < GameController.Instance.trainers.Length; i++)
+        {
+            if(i != playerID && GameController.Instance.trainers[i].isAlive)
+            {
+                checker = false;
+            }
+        }
+        return checker;
     }
 
     private void ConfigureBoardController()

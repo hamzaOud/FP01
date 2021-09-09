@@ -143,7 +143,6 @@ public class MovePokemon : MonoBehaviour
              gameController.selectedTile.gameObject.GetComponent<Tile>().tileID, tile.gameObject.GetComponent<Tile>().tileID, 
                 gameController.selectedTile.GetComponent<Tile>().pokemonObject.GetComponent<PokemonController>().unitID);
         }
-        //tile = gameController.selectedTile;
     }
 
     [PunRPC]
@@ -213,19 +212,26 @@ public class MovePokemon : MonoBehaviour
 
             if (GameController.Instance.myBoard.myTiles.Contains(targetTile) &&
                 !GameController.Instance.myBoard.myTiles.Contains(startTile))
-            {
+            {//If moving from bench to board
                 GamePlayController.Instance.myUnitsOnBoard.Add(unit.GetComponent<PokemonController>());
                 unit.GetComponent<PokemonController>().isOnBoard = true;
-                GamePlayController.Instance.myUnitsOnBoard.Remove(otherUnit.GetComponent<PokemonController>());
-                otherUnit.GetComponent<PokemonController>().isOnBoard = false;
-            } else if (GameController.Instance.myBoard.myTiles.Contains(startTile) &&
-                !GameController.Instance.myBoard.myTiles.Contains(targetTile))
-            {
-                GamePlayController.Instance.myUnitsOnBoard.Add(otherUnit.GetComponent<PokemonController>());
-                otherUnit.GetComponent<PokemonController>().isOnBoard = true;
-                GamePlayController.Instance.myUnitsOnBoard.Remove(unit.GetComponent<PokemonController>());
-                unit.GetComponent<PokemonController>().isOnBoard = false;
+                if (otherUnit != null)
+                {
+                    GamePlayController.Instance.myUnitsOnBoard.Remove(otherUnit.GetComponent<PokemonController>());
+                    otherUnit.GetComponent<PokemonController>().isOnBoard = false;
+                }
             }
+            else if (GameController.Instance.myBoard.myTiles.Contains(startTile) &&
+                !GameController.Instance.myBoard.myTiles.Contains(targetTile))
+            {//if moving from board to bench
+                if (otherUnit != null)
+                    { 
+                    GamePlayController.Instance.myUnitsOnBoard.Add(otherUnit.GetComponent<PokemonController>());
+                    otherUnit.GetComponent<PokemonController>().isOnBoard = true;
+                     }
+                GamePlayController.Instance.myUnitsOnBoard.Remove(unit.GetComponent<PokemonController>());
+                    unit.GetComponent<PokemonController>().isOnBoard = false;
+                }
         }
 
         unit.GetComponent<MovePokemon>().tile = targetTile;
