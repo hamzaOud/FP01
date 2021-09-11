@@ -269,6 +269,8 @@ public class GameController : MonoBehaviour
                 {
                     UIController.Instance.endCanvas.endText.text = "YOU WON!";
                     UIController.Instance.endCanvas.gameObject.SetActive(true);
+                    UIController.Instance.endCanvas.lobbyButton.gameObject.SetActive(false);
+                    UIController.Instance.LoadLogin();
                 }
             }
         }

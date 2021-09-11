@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 2
   sellPrice: 1
   name: Bulbasaur
-  model: {fileID: 0}
+  model: {fileID: 7959614422511654979, guid: a864b7b04f7e586428fb208b71a96073, type: 3}
   evolution: {fileID: 11400000, guid: 97ce488d04f355e40a7964cb781911b1, type: 2}
   type: 06000000
   pokeClass: 00000000

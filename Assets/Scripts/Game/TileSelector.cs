@@ -35,7 +35,13 @@ public class TileSelector : MonoBehaviour
         if (GamePlayController.Instance.currentGameStage != GameStage.Preparation)
             return;
         //Return its color to white
+        if (GameController.Instance.myBoard.myBench.Contains(this.gameObject))
+        {
+            GetComponent<MeshRenderer>().material.color = Color.white;
+        }
+        else { 
         GetComponent<MeshRenderer>().material = nonselectedMaterial;
+        }
         //Assign null to the selected tile property
         gameController.selectedTile = null;
     }

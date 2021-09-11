@@ -223,6 +223,7 @@ public class GamePlayController : MonoBehaviour
             foreach(GameObject unit in GameController.Instance.trainers[i].pokemonsOnBoard)
             {
                 unit.SetActive(true);
+                //unit.GetComponent<PokemonController>().ResetTest();
             }
         }
         GameObject[] units = GameObject.FindGameObjectsWithTag("Units");

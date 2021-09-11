@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -157,5 +158,16 @@ public class UIController : MonoBehaviour
 
             playerUIElements[i].playerHP.value = (float)GameController.Instance.trainers[i].currentHP / (float)100;
         }
+    }
+
+    IEnumerator ReturnToLobby()
+    {
+        yield return new WaitForSeconds(5f);
+        //Spawn(playerID, pokemon.pokemonID);
+        SceneManager.LoadScene(0);
+    }
+    public void LoadLogin()
+    {
+        StartCoroutine(ReturnToLobby());
     }
 }

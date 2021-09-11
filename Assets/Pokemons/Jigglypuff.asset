@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 0
   sellPrice: 4
   name: Jigglypuff
-  model: {fileID: 0}
+  model: {fileID: 6217289599454008472, guid: 46bfe585e4434d34c83ac77dd6e30930, type: 3}
   evolution: {fileID: 11400000, guid: 9000591c1b6f68f4693125bbade9469c, type: 2}
   type: 07000000
   pokeClass: 03000000

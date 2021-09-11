@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 2
   sellPrice: 1
   name: Igglybuff
-  model: {fileID: 0}
+  model: {fileID: 1760592689027397054, guid: 03c1eddfe57722e479067774d5706cc4, type: 3}
   evolution: {fileID: 11400000, guid: 4f23023d002317e498608212e5c15b86, type: 2}
   type: 07000000
   pokeClass: 03000000

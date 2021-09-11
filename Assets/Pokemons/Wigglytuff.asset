@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 0
   sellPrice: 9
   name: Wigglytuff
-  model: {fileID: 0}
+  model: {fileID: 1123569140519399425, guid: abae420f15f1bdd488611686a5660250, type: 3}
   evolution: {fileID: 0}
   type: 07000000
   pokeClass: 03000000

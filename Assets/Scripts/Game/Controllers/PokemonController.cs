@@ -217,13 +217,12 @@ public class PokemonController : MonoBehaviour
         
         this.gameObject.SetActive(false);
 
-        if (ownerID != 888)
+        if (ownerID != 888 && ownerID == GameController.Instance.playerID)
         {
             if (GamePlayController.Instance.AreAllMyUnitsDead())
             {
                 print("You should be losing HP");
-                if (PhotonNetwork.IsMasterClient)
-                    GameController.Instance.ReduceTrainerHP(ownerID, 10);
+                GameController.Instance.ReduceTrainerHP(ownerID, 10);
             }
         }
     }

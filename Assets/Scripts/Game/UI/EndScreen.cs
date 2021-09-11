@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class EndScreen : MonoBehaviour
 {
     public Text endText;
+    public Button lobbyButton;
 
     public void OnClickReturnToLobby()
     {

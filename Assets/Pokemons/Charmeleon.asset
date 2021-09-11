@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 0
   sellPrice: 4
   name: Charmeleon
-  model: {fileID: 0}
+  model: {fileID: 7125146126065840209, guid: 9366773277e9a2f4eabe1d6d1d3919b8, type: 3}
   evolution: {fileID: 11400000, guid: d6f495c9a402100448a43be1206f103f, type: 2}
   type: 01000000
   pokeClass: 01000000

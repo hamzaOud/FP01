@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 0
   sellPrice: 4
   name: Ivysaur
-  model: {fileID: 0}
+  model: {fileID: 5103024965189581993, guid: f81edc36482665c49963edd435aae166, type: 3}
   evolution: {fileID: 11400000, guid: 97f54e7fef60a5341a0f92fc3e967630, type: 2}
   type: 06000000
   pokeClass: 00000000

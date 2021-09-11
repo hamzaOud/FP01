@@ -4283,6 +4283,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
   - {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
   - {fileID: 11400000, guid: 494c230d5fa99b340915b4fe8ba14db9, type: 2}
+  - {fileID: 11400000, guid: 88616040cfbcdc74ca5c98e1e7f2e2d3, type: 2}
+  - {fileID: 11400000, guid: 10e40d2d4050cfe408a096177071c9c5, type: 2}
+  - {fileID: 11400000, guid: 84225328a5ee34a43a5cb44b58f5a448, type: 2}
   pokemonsDatabase:
   - {fileID: 11400000, guid: ef3eb6a3957604a79ad122d6cd1537b3, type: 2}
   - {fileID: 11400000, guid: 66014e3f646514002b971e7fd7afc4f6, type: 2}
@@ -4291,6 +4294,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 494c230d5fa99b340915b4fe8ba14db9, type: 2}
   - {fileID: 11400000, guid: 84160743f26312d4a909fb481ee940d8, type: 2}
   - {fileID: 11400000, guid: c187f77e1d67aa5449fa9ddc15ad5743, type: 2}
+  - {fileID: 11400000, guid: 88616040cfbcdc74ca5c98e1e7f2e2d3, type: 2}
+  - {fileID: 11400000, guid: 345a68b6882cb834c8a8169751c5b193, type: 2}
+  - {fileID: 11400000, guid: d6f495c9a402100448a43be1206f103f, type: 2}
+  - {fileID: 11400000, guid: 84225328a5ee34a43a5cb44b58f5a448, type: 2}
+  - {fileID: 11400000, guid: 4f23023d002317e498608212e5c15b86, type: 2}
+  - {fileID: 11400000, guid: 9000591c1b6f68f4693125bbade9469c, type: 2}
+  - {fileID: 11400000, guid: 10e40d2d4050cfe408a096177071c9c5, type: 2}
+  - {fileID: 11400000, guid: 97ce488d04f355e40a7964cb781911b1, type: 2}
+  - {fileID: 11400000, guid: 97f54e7fef60a5341a0f92fc3e967630, type: 2}
 --- !u!114 &656400978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12482,6 +12494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endText: {fileID: 670332826}
+  lobbyButton: {fileID: 1165766155}
 --- !u!1 &2026392651
 GameObject:
   m_ObjectHideFlags: 0

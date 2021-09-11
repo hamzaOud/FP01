@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 0
   sellPrice: 9
   name: Venusaur
-  model: {fileID: 0}
+  model: {fileID: 5881259676798974801, guid: 5af7bda2816d3e444a235f6ab3dc99bf, type: 3}
   evolution: {fileID: 0}
   type: 06000000
   pokeClass: 000000000a000000

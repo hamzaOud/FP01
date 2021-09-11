@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 2
   sellPrice: 1
   name: Charmander
-  model: {fileID: 0}
+  model: {fileID: 537109073694743259, guid: 54944d3078fbf524e9f00514270a38a9, type: 3}
   evolution: {fileID: 11400000, guid: 345a68b6882cb834c8a8169751c5b193, type: 2}
   type: 01000000
   pokeClass: 01000000
