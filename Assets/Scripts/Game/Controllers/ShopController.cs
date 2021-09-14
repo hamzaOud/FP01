@@ -56,11 +56,11 @@ public class ShopController : MonoBehaviour
 
     public void updateUI()
     {
-        xpText.text = trainer.currentExp.ToString() + "/" + levelsXP[trainer.level].ToString();
+        xpText.text = "XP: " + trainer.currentExp.ToString() + "/" + levelsXP[trainer.level].ToString();
         double value = (double)trainer.currentExp / (double)levelsXP[trainer.level];
         xpSlider.value = (float)value;
-        balanceText.text = "C :" + data.trainer.balance;
-        levelText.text = data.trainer.level.ToString();
+        balanceText.text = "Gold :" + data.trainer.balance;
+        levelText.text = "Level: " + data.trainer.level.ToString();
         if(trainer.balance < buyXPCost)
         { 
             buyXPButton.interactable = false;

@@ -190,8 +190,8 @@ public class PokemonController : MonoBehaviour
         this.gameObject.SetActive(true);
         GetComponent<PokemonController>().target = null;
         GetComponent<PokemonController>().enemies.Clear();
-        //transform.position = tilePosition.gameObject.transform.position;
-        transform.position = this.gameObject.GetComponent<MovePokemon>().tile.transform.position;
+        StartCoroutine(RepositionObject());
+        
         transform.rotation = Quaternion.Euler(0, 0, 0);
         GetComponent<PokemonController>().stats.Reset();
         GetComponent<PokemonController>().isAlive = true;
@@ -199,6 +199,12 @@ public class PokemonController : MonoBehaviour
         GetComponent<PokemonController>().isParalyzed = false;
         GetComponent<PokemonController>().isStunned = false;
         GetComponent<PokemonController>().isMoving = false;
+    }
+
+    IEnumerator RepositionObject()
+    {
+        yield return new WaitForSeconds(0.1f);
+        transform.position = tilePosition.transform.position;
     }
 
     private void Die()

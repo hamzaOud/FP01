@@ -30,8 +30,17 @@ public class UIController : MonoBehaviour
 
         for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         { //Show players names and levels on players canvas
-            playerUIElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName
+            if (i == GameController.Instance.playerID)
+            {
+                playerUIElements[i].playerName.text = "(YOU)" + PhotonNetwork.PlayerList[i].NickName
             + " Level " + GameController.Instance.trainers[i].level.ToString();
+                playerUIElements[i].fill.color = Color.yellow;
+            }
+            else
+                playerUIElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName
+                + " Level " + GameController.Instance.trainers[i].level.ToString();
+
+            playerUIElements[i].playerHP.value = (float)GameController.Instance.trainers[i].currentHP / (float)100;
         }
         if (PhotonNetwork.PlayerList.Length < 8)
         {
@@ -42,6 +51,7 @@ public class UIController : MonoBehaviour
         }
         altPanel.SetActive(false);
         endCanvas.gameObject.SetActive(false);
+        StartCoroutine(Tester());
     }
 
     private void Update()
@@ -114,6 +124,11 @@ public class UIController : MonoBehaviour
         return returnValue;
     }
 
+    IEnumerator Tester()
+    {
+        yield return new WaitForSeconds(0.3f);
+        UpdateUI();
+    }
     public void UpdateTimer()
     {
         timerText.text = GamePlayController.Instance.timerDisplay.ToString();
@@ -153,6 +168,13 @@ public class UIController : MonoBehaviour
 
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
+            if(i == GameController.Instance.playerID)
+            {
+                playerUIElements[i].playerName.text = "(YOU)" + PhotonNetwork.PlayerList[i].NickName
+            + " Level " + GameController.Instance.trainers[i].level.ToString();
+                playerUIElements[i].fill.color = Color.yellow;
+            }
+            else 
             playerUIElements[i].playerName.text = PhotonNetwork.PlayerList[i].NickName
             + " Level " + GameController.Instance.trainers[i].level.ToString();
 

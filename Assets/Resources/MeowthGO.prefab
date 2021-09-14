@@ -244,7 +244,7 @@ MonoBehaviour:
   target: {fileID: 0}
   enemies: []
   attackRange: 1.5
-  attackSpeed: 2
+  attackSpeed: 3
   attackTimer: 0
 --- !u!195 &9158690118068868246
 NavMeshAgent:

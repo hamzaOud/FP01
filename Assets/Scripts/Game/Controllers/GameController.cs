@@ -103,6 +103,7 @@ public class GameController : MonoBehaviour
             }
         }
 
+        updatePokemonsOnBoard();
         UIController.Instance.UpdateUI();
     }
 
@@ -244,6 +245,16 @@ public class GameController : MonoBehaviour
                 trainers[i].LevelUP();
             }
         }
+    }
+
+    public void AddXP()
+    {
+        GameController.Instance.trainers[playerID].AddXP(2);
+    }
+
+    public void AddGold()
+    {
+        GameController.Instance.trainers[playerID].balance += GamePlayController.Instance.CalculateIncome();
     }
 
     public void ReduceTrainerHP(int trainerID, int amount)

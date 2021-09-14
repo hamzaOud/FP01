@@ -12,13 +12,13 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 25; //Constant that keeps track of length of preparation round
-    public const int combatRoundTime = 20; //Constant that keeps track of length of combat round
+    public const int preparationRoundTime = 30; //Constant that keeps track of length of preparation round
+    public const int combatRoundTime = 30; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
     public int enemyID;
 
-    public int[] baseIncome = { 2, 3, 4, 5, 5, 5, 5, 5, 5 };//Base amount that you gain depending on level
+    public int[] baseIncome = { 2, 3, 4, 5};//Base amount that you gain depending on level
 
     [HideInInspector]
     public List<PokemonController> enemyPokemons = new List<PokemonController>();//List of enemy pokemons that are alive on the board
@@ -95,7 +95,12 @@ public class GamePlayController : MonoBehaviour
         else if (currentGameStage == GameStage.Combat)
         {
             currentGameStage = GameStage.Preparation;
+            GameController.Instance.AddXP();
+            GameController.Instance.AddGold();
+            UIController.Instance.UpdateUI();
+            ShopController.Instance.updateUI();
             roundNumber++; //Only increment round number after each combat round
+            
         }
         PrepareBoard();
         ShopController.Instance.RefreshShop();
@@ -168,7 +173,10 @@ public class GamePlayController : MonoBehaviour
 
     public int CalculateIncome()
     {
-        int income = baseIncome[Data.Instance.trainer.level + 1] + Data.Instance.trainer.balance / 10;
+        int incomeIndex = roundNumber;
+        if (incomeIndex > 3)
+            incomeIndex = 3;
+        int income = baseIncome[roundNumber] + Data.Instance.trainer.balance / 10;
         return income;
     }
 
@@ -197,7 +205,7 @@ public class GamePlayController : MonoBehaviour
                     }
                     break;
                 case 2:
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
                     }
@@ -232,10 +240,11 @@ public class GamePlayController : MonoBehaviour
         {
             if (units[i].GetComponent<PokemonController>().ownerID == 888)
                 Destroy(units[i]);
-            else {
-                print("Resetting "+units[i].GetComponent<PokemonController>().unitID + " that is alive: " + units[i].GetComponent<PokemonController>().isAlive);
-                units[i].GetComponent<PokemonController>().ResetTest();     
-            }
+        }
+        units = GameObject.FindGameObjectsWithTag("Units");
+        for(int i = 0; i< units.Length; i++)
+        {
+            units[i].GetComponent<PokemonController>().ResetTest();
         }
     }
 

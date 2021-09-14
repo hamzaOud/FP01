@@ -23,7 +23,7 @@ public class Trainer
         pokemonsOnBoard = new List<GameObject>();
         spawnPoints = new GameObject[GameController.Instance.myBoard.myBench.Length + GameController.Instance.myBoard.myTiles.Length];
         trainerID = playerID;
-        currentHP = 20;
+        currentHP = 40;
         isAlive = true;
     }
 
