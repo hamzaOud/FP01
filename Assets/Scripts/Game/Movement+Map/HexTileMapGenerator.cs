@@ -181,8 +181,8 @@ public class HexTileMapGenerator : MonoBehaviour
     //Computes the absolute value of the coordinate of A minus B for each cube coordinate, then returns the largest one.
     public int Distance(Node nodeA, Node nodeB)
     {
-        Vector3 cubeNodeA = HexTileMapGenerator.Instance.GetCubeCoord(nodeA);
-        Vector3 cubeNodeB = HexTileMapGenerator.Instance.GetCubeCoord(nodeB);
+        Vector3 cubeNodeA = GetCubeCoord(nodeA);
+        Vector3 cubeNodeB = GetCubeCoord(nodeB);
         return (int)Mathf.Max(Mathf.Abs(cubeNodeA.x - cubeNodeB.x), Mathf.Abs(cubeNodeA.y - cubeNodeB.y), Mathf.Abs(cubeNodeA.z - cubeNodeB.z));
 
         //We could also use the following line of code to compute the distance.

@@ -380,7 +380,7 @@ public class GamePlayController : MonoBehaviour
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    InstantiateEnemy(Data.Instance.pokemons[0].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
+                    InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
                 }
             }
         }

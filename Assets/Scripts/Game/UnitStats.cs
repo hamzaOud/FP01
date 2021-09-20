@@ -6,7 +6,7 @@ public class UnitStats : MonoBehaviour
 {
 
 
-    private int currentHP = 100;
+    public int currentHP = 100;
     public int CurrentHP
     {
         get { return currentHP; }

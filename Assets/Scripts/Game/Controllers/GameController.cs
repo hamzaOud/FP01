@@ -249,7 +249,7 @@ public class GameController : MonoBehaviour
 
     public void AddXP()
     {
-        GameController.Instance.trainers[playerID].AddXP(2);
+        GameController.Instance.trainers[playerID].AddXP(4);
     }
 
     public void AddGold()
