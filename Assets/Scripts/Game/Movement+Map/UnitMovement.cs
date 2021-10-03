@@ -20,7 +20,7 @@ public class UnitMovement : MonoBehaviour
     public int attackRange = 1;
     public bool isMapOwner;
 
-    public HexTileMapGenerator hexMap;
+    public HextileMap2 hexMap;
 
     public Vector3 heading;
     public float moveSpeed = 4.0f;
@@ -30,10 +30,9 @@ public class UnitMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (PhotonNetwork.IsMasterClient)
-        {
             GetCurrentTile();
 
+        
             if (target == null)
             {
                 target = FindClosestEnemyUnit();
@@ -47,7 +46,7 @@ public class UnitMovement : MonoBehaviour
             {
                 if (u.gameObject != target)
                 {
-                    findNodeFromTile(u.GetComponent<CurrentTileTest>().currentTile).walkable = false;
+                    findNodeFromTile(u.GetComponent<UnitMovement>().currentTile).walkable = false;
                 }
             }
             foreach(Node n in hexMap.occupiedNodes)
@@ -61,12 +60,12 @@ public class UnitMovement : MonoBehaviour
                 }
             }
 
-            if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) > 1)
+            if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<UnitMovement>().currentTile)) > 1)
             {
-                FindPath(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile));
+                FindPath(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<UnitMovement>().currentTile));
                 Move();
             }
-            else if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<CurrentTileTest>().currentTile)) == 1)
+            else if (hexMap.Distance(findNodeFromTile(currentTile), findNodeFromTile(target.GetComponent<UnitMovement>().currentTile)) == 1)
             {
                 if (Vector3.Distance(transform.position, currentTile.transform.position) > 0.6f)
                 {
@@ -78,18 +77,18 @@ public class UnitMovement : MonoBehaviour
                     moving = false;
                 }
             }
-        }
+        
     }
 
     private void Start()
     {    
-        hexMap = HexTileMapGenerator.Instance;
+        hexMap = HextileMap2.Instance;
         myNodes = new Node[hexMap.mapWidth, hexMap.mapHeight];
         for(int y = 0; y < hexMap.mapHeight; y++)
         {
             for (int x = 0; x < hexMap.mapWidth; x++)
             {
-                Node node = new Node(true, hexMap.nodes[0,x, y].gridX, hexMap.nodes[0,x,y].gridY, hexMap.nodes[0,x, y].worldPos);
+                Node node = new Node(true, hexMap.nodes[x, y].gridX, hexMap.nodes[x,y].gridY, hexMap.nodes[x, y].worldPos);
                 myNodes[x, y] = node;
             }
         }

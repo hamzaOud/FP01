@@ -1710,7 +1710,7 @@ MonoBehaviour:
   target: {fileID: 0}
   enemies: []
   attackRange: 1.5
-  attackSpeed: 2
+  attackSpeed: 1.84
   attackTimer: 0
 --- !u!114 &1339758439676207839
 MonoBehaviour:
@@ -1724,7 +1724,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1587a074e5c4c8980be09b3aa6799e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 100
+  currentHP: 125
+  maxHP: 125
   maxMana: 100
   Attack: 0
   Defense: 0

@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 5
   sellPrice: 4
   name: Pikachu
-  model: {fileID: 7157340368237103161, guid: dd13c294479bc4ca99934b3095342529, type: 3}
+  model: {fileID: 2759364671985994654, guid: d4369faad15e7c449aea0ef380742d98, type: 3}
   evolution: {fileID: 11400000, guid: b1569bb9bfb5c4328876f2c9061ada5f, type: 2}
   type: 07000000
   pokeClass: 04000000

@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 0
   sellPrice: 9
   name: Raichu
-  model: {fileID: 503656301921063679, guid: 877cdea0faa2e4fd4858e33d721d2221, type: 3}
+  model: {fileID: 5178343870027939646, guid: f57f3c0163b83cb47869f9b5efaa5b36, type: 3}
   evolution: {fileID: 0}
   type: 07000000
   pokeClass: 04000000

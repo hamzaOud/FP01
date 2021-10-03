@@ -254,7 +254,7 @@ public class GameController : MonoBehaviour
 
     public void AddGold()
     {
-        GameController.Instance.trainers[playerID].balance += GamePlayController.Instance.CalculateIncome();
+        trainers[playerID].balance += GamePlayController.Instance.CalculateIncome();
     }
 
     public void ReduceTrainerHP(int trainerID, int amount)

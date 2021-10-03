@@ -16,14 +16,14 @@ public class Trainer
 
     public Trainer(int playerID)
     {
-        balance = 50; //Change this to 2, so start with 2 gold
+        balance = 2; //Change this to 2, so start with 2 gold
         level = 1;
         currentExp = 0;
         pokedex = new Dictionary<Pokemon, List<GameObject>>();
         pokemonsOnBoard = new List<GameObject>();
         spawnPoints = new GameObject[GameController.Instance.myBoard.myBench.Length + GameController.Instance.myBoard.myTiles.Length];
         trainerID = playerID;
-        currentHP = 40;
+        currentHP = 100;
         isAlive = true;
     }
 

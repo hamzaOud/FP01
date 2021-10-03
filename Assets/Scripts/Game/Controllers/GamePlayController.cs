@@ -12,7 +12,7 @@ public class GamePlayController : MonoBehaviour
 
     public GameStage currentGameStage;
     public int roundNumber = 0; //Keeps track of the round number, to determine what to put on board
-    public const int preparationRoundTime = 30; //Constant that keeps track of length of preparation round
+    public const int preparationRoundTime = 35; //Constant that keeps track of length of preparation round
     public const int combatRoundTime = 30; //Constant that keeps track of length of combat round
     private float currentRoundTimer = 0.0f;
     public int timerDisplay;
@@ -173,10 +173,19 @@ public class GamePlayController : MonoBehaviour
 
     public int CalculateIncome()
     {
-        int incomeIndex = roundNumber;
-        if (incomeIndex > 3)
-            incomeIndex = 3;
-        int income = baseIncome[roundNumber] + Data.Instance.trainer.balance / 10;
+        int income = 0;
+        switch (roundNumber)
+        {
+            case 0: income = 2;
+                break;
+            case 1: income = 3;
+                break;
+            case 2:income = 4;
+                break;
+            default: income = 5;
+                break;
+        }
+        income +=  Data.Instance.trainer.balance / 10;
         return income;
     }
 
@@ -192,24 +201,24 @@ public class GamePlayController : MonoBehaviour
         {
             switch (roundNumber)
             {
-                /*case 0:
+                case 0:
                     for (int i = 0; i < 1; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 3]);
+                        InstantiateEnemy(Data.Instance.pokemonsDatabase[0].model, GameController.Instance.myBoard.enemyTiles[i + 3]);
                     }
                     break;
                 case 1:
                     for (int i = 0; i < 2; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 3]);
+                        InstantiateEnemy(Data.Instance.pokemonsDatabase[0].model, GameController.Instance.myBoard.enemyTiles[i + 3]);
                     }
                     break;
                 case 2:
                     for (int i = 0; i < 3; i++)
                     {
-                        InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
+                        InstantiateEnemy(Data.Instance.pokemonsDatabase[0].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
                     }
-                    break;*/
+                    break;
                 default:
                     if (PhotonNetwork.IsMasterClient)
                     {                    
@@ -239,7 +248,11 @@ public class GamePlayController : MonoBehaviour
         for(int i = 0;i < units.Length;i++)
         {
             if (units[i].GetComponent<PokemonController>().ownerID == 888)
+            {
+                units[i].gameObject.SetActive(true);
                 Destroy(units[i]);
+            }
+                //Destroy(units[i]);
         }
         units = GameObject.FindGameObjectsWithTag("Units");
         for(int i = 0; i< units.Length; i++)
@@ -252,8 +265,8 @@ public class GamePlayController : MonoBehaviour
     {
 
         GameObject enemy = Instantiate(prefab, tile.transform.position, Quaternion.Euler(0,180,0));
-        tile.gameObject.GetComponent<Tile>().pokemonObject = enemy;
-        enemy.GetComponent<MovePokemon>().tile = tile;
+        //tile.gameObject.GetComponent<Tile>().pokemonObject = enemy;
+        //enemy.GetComponent<MovePokemon>().tile = tile;
         enemy.GetComponent<PokemonController>().ownerID = 888;
         enemy.GetComponent<PokemonController>().isOnBoard = true;
         enemy.GetComponent<PokemonController>().unitID = GameController.Instance.npcUnitID;
@@ -380,7 +393,7 @@ public class GamePlayController : MonoBehaviour
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    InstantiateEnemy(Data.Instance.pokemons[1].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
+                    InstantiateEnemy(Data.Instance.pokemonsDatabase[0].model, GameController.Instance.myBoard.enemyTiles[i + 2]);
                 }
             }
         }

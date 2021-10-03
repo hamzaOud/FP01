@@ -13,7 +13,7 @@ public class CurrentTileTest : MonoBehaviour
         GetCurrentTile();
     }
 
-    private void Update()
+    void Update()
     {
         GetCurrentTile();
     }
@@ -24,8 +24,10 @@ public class CurrentTileTest : MonoBehaviour
         // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
+            print("found something beneath");
             if (hit.collider.gameObject.tag == "Tile")
             {
+                print("Should assign something to currenttiletest");
                 currentTile = hit.collider.gameObject;
             }
         }

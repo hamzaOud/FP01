@@ -16,7 +16,8 @@ MonoBehaviour:
   price: 3
   sellPrice: 2
   name: Meowth
-  model: {fileID: 4711019089701612251, guid: 70ef66c9703f9412eb4da3941def6607, type: 3}
+  model: {fileID: 7605296377624482781, guid: 830abe5119a43284088003c2ef9d6568, type: 3}
   evolution: {fileID: 0}
   type: 02000000
   pokeClass: 09000000
+  pokemonID: 0

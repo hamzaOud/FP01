@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 2
   sellPrice: 1
   name: Pichu
-  model: {fileID: 2796612708704590168, guid: 89201acfd0e2d46699f8c08536df686a, type: 3}
+  model: {fileID: 3173697257696167109, guid: 464199d93d4364846906463138123bb4, type: 3}
   evolution: {fileID: 11400000, guid: 7f0498192286b4f47a3f033178b454a7, type: 2}
   type: 07000000
   pokeClass: 04000000
